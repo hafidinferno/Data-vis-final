@@ -1,7 +1,7 @@
-import React from 'react';
+import React from "react";
 import { useState, useEffect } from "react";
 import "./index.css";
-import Dashboard from './components/Dashboard';
+import Dashboard from "./components/Dashboard";
 import ThemeToggle from "./components/ThemeToggle";
 
 function App() {
@@ -28,14 +28,6 @@ function App() {
 
   return (
     <div className="app-container">
-      <header className="modern-header flex justify-between items-center p-4">
-        <div>
-           {/* Placeholder for existing logo or title specific content if any was there,
-               otherwise simply keeping structure */}
-        </div>
-        <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
-      </header>
-
       <div className="dashboard-container">
         <Dashboard />
       </div>

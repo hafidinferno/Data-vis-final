@@ -133,18 +133,11 @@ const StudentValueGuide = ({ cities, onCitySelect, selectedCity }) => {
     const tooltip = d3
       .select("body")
       .append("div")
-      .attr("class", "student-chart-tooltip")
+      .attr("class", "student-chart-tooltip chart-tooltip")
       .style("position", "absolute")
       .style("visibility", "hidden")
-      .style("background", "rgba(15, 23, 42, 0.97)")
-      .style("border", "1px solid rgba(99, 102, 241, 0.4)")
-      .style("border-radius", "12px")
-      .style("padding", "16px")
-      .style("font-size", "13px")
-      .style("color", "#f8fafc")
       .style("pointer-events", "none")
       .style("z-index", "1000")
-      .style("box-shadow", "0 8px 32px rgba(0,0,0,0.4)")
       .style("min-width", "220px");
 
     if (chartType === "grouped") {
@@ -297,7 +290,7 @@ const StudentValueGuide = ({ cities, onCitySelect, selectedCity }) => {
 
                     <div style="background: rgba(236, 72, 153, 0.1); border-radius: 8px; padding: 10px; margin-bottom: 12px;">
                         <div style="color: #ec4899; font-weight: 600; margin-bottom: 8px;">📊 Student Monthly Cost</div>
-                        <div style="display: grid; gap: 4px; font-size: 12px; color: #cbd5e1;">
+                        <div style="display: grid; gap: 4px; font-size: 12px; color: #475569;">
                             <div style="display: flex; justify-content: space-between;">
                                 <span>🏠 Rent (1BR outside):</span>
                                 <span>$${d.rent.toFixed(0)}</span>
@@ -311,7 +304,7 @@ const StudentValueGuide = ({ cities, onCitySelect, selectedCity }) => {
                                 <span>$${d.transport.toFixed(0)}</span>
                             </div>
                         </div>
-                        <div style="border-top: 1px dashed rgba(255,255,255,0.2); margin-top: 8px; padding-top: 8px; display: flex; justify-content: space-between; font-weight: 700;">
+                        <div style="border-top: 1px dashed rgba(100,116,139,0.3); margin-top: 8px; padding-top: 8px; display: flex; justify-content: space-between; font-weight: 700;">
                             <span>Total:</span>
                             <span style="color: #ec4899;">$${d.studentMonthlyCost.toFixed(
                               0
