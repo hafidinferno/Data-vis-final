@@ -5,31 +5,42 @@
   --primary-hue: 236;
   --primary: hsl(var(--primary-hue), 80%, 66%); /* Indigo-400 */
   --primary-dim: hsl(var(--primary-hue), 80%, 80%);
-  
+
   /* Light Theme Defaults - REFINED for Cleaner Look */
   --bg-main: #ffffff;
   --bg-secondary: #f8fafc;
   --bg-card: #ffffff; /* Solid white for better cover */
   --bg-card-hover: #f8fafc;
-  
+
   --text-main: #1e293b; /* Dark Slate Gray for text (high contrast) */
   --text-muted: #64748b; /* Slate 500 */
-  
+  --text-secondary: #475569; /* Slate 600 - readable secondary text for light mode */
+
   --border: #e2e8f0; /* Slate 200 - Light Grey */
-  --glass-border: rgba(0, 0, 0, 0.05); /* Very subtle dark border for light mode */
-  --glass-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
-  
+  --glass-border: rgba(
+    0,
+    0,
+    0,
+    0.05
+  ); /* Very subtle dark border for light mode */
+  --glass-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05),
+    0 2px 4px -1px rgba(0, 0, 0, 0.02);
+
   --chart-tooltip-bg: rgba(255, 255, 255, 0.98);
   --chart-tooltip-color: #0f172a;
 
   --fill-country: #e2e8f0;
   --bg-legend: rgba(255, 255, 255, 0.85);
-  
+
   /* Lighter, subtler gradient for light mode */
-  --gradient-bg: radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.05) 0px, transparent 40%),
-                 radial-gradient(at 100% 0%, rgba(236, 72, 153, 0.05) 0px, transparent 40%),
-                 radial-gradient(at 100% 100%, rgba(20, 184, 166, 0.05) 0px, transparent 40%);
-                 
+  --gradient-bg: radial-gradient(
+      at 0% 0%,
+      rgba(99, 102, 241, 0.05) 0px,
+      transparent 40%
+    ),
+    radial-gradient(at 100% 0%, rgba(236, 72, 153, 0.05) 0px, transparent 40%),
+    radial-gradient(at 100% 100%, rgba(20, 184, 166, 0.05) 0px, transparent 40%);
+
   --font-sans: "Outfit", system-ui, -apple-system, sans-serif;
 }
 

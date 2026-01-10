@@ -333,7 +333,7 @@ const Dashboard = () => {
                         cities.find((c) => c.city === e.target.value)
                       )
                     }
-                                   style={{
+                    style={{
                       border: "1px solid #cbd5e1",
                       borderRadius: "8px",
                       padding: "0.5rem 2.2rem 0.5rem 1rem",
@@ -509,59 +509,78 @@ const Dashboard = () => {
               />
             </section>
             <section className="card">
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
-                <h3 style={{ margin: 0 }}>🤖 AI Agent Tips: {tipCity ? tipCity.city : "Select a city"}</h3>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  marginBottom: "1rem",
+                }}
+              >
+                <h3 style={{ margin: 0 }}>
+                  🤖 AI Agent Tips: {tipCity ? tipCity.city : "Select a city"}
+                </h3>
                 <div style={{ position: "relative", minWidth: 150 }}>
-                   <select
-                     value={tipCity?.city || ""}
-                     onChange={(e) =>
-                       setTipCity(cities.find((c) => c.city === e.target.value))
-                     }
-                     style={{
-                       border: "1px solid #cbd5e1",
-                       borderRadius: "8px",
-                       padding: "0.3rem 2rem 0.3rem 0.8rem",
-                       color: "#1e293b",
-                       fontSize: "0.85rem",
-                       cursor: "pointer",
-                       appearance: "none",
-                       WebkitAppearance: "none",
-                       MozAppearance: "none",
-                       outline: "none",
-                       background: "#f8fafc",
-                       width: "100%",
-                     }}
-                   >
-                     <option value="" disabled>Choose City...</option>
-                     {[...cities].sort((a, b) => a.city.localeCompare(b.city)).map((c, i) => (
-                       <option key={i} value={c.city}>
-                         {c.city}
-                       </option>
-                     ))}
-                   </select>
-                   <svg
-                     xmlns="http://www.w3.org/2000/svg"
-                     width="16"
-                     height="16"
-                     viewBox="0 0 24 24"
-                     fill="none"
-                     stroke="#475569"
-                     strokeWidth="2"
-                     strokeLinecap="round"
-                     strokeLinejoin="round"
-                     style={{
-                       position: "absolute",
-                       right: 10,
-                       top: "50%",
-                       transform: "translateY(-50%)",
-                       pointerEvents: "none",
-                     }}
-                   >
-                     <polyline points="6 9 12 15 18 9" />
-                   </svg>
+                  <select
+                    value={tipCity?.city || ""}
+                    onChange={(e) =>
+                      setTipCity(cities.find((c) => c.city === e.target.value))
+                    }
+                    style={{
+                      border: "1px solid #cbd5e1",
+                      borderRadius: "8px",
+                      padding: "0.3rem 2rem 0.3rem 0.8rem",
+                      color: "#1e293b",
+                      fontSize: "0.85rem",
+                      cursor: "pointer",
+                      appearance: "none",
+                      WebkitAppearance: "none",
+                      MozAppearance: "none",
+                      outline: "none",
+                      background: "#f8fafc",
+                      width: "100%",
+                    }}
+                  >
+                    <option value="" disabled>
+                      Choose City...
+                    </option>
+                    {[...cities]
+                      .sort((a, b) => a.city.localeCompare(b.city))
+                      .map((c, i) => (
+                        <option key={i} value={c.city}>
+                          {c.city}
+                        </option>
+                      ))}
+                  </select>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#475569"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    style={{
+                      position: "absolute",
+                      right: 10,
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      pointerEvents: "none",
+                    }}
+                  >
+                    <polyline points="6 9 12 15 18 9" />
+                  </svg>
                 </div>
               </div>
-              <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "1rem",
+                }}
+              >
                 {tipCity ? (
                   generateSmartTips(tipCity).map((tip, i) => (
                     <div
@@ -908,7 +927,7 @@ const Dashboard = () => {
               <p
                 style={{
                   lineHeight: "1.8",
-                  color: "#cbd5e1",
+                  color: "var(--text-secondary)",
                   marginBottom: "1rem",
                 }}
               >
@@ -917,7 +936,7 @@ const Dashboard = () => {
                 abstract for the general public, international students,
                 expatriates, and decision-makers.
               </p>
-              <p style={{ lineHeight: "1.8", color: "#cbd5e1" }}>
+              <p style={{ lineHeight: "1.8", color: "var(--text-secondary)" }}>
                 <strong>Our Objective:</strong> Provide a clear, interactive,
                 and comparative view of the global cost of living,{" "}
                 <strong style={{ color: "#10b981" }}>
@@ -937,7 +956,7 @@ const Dashboard = () => {
               <ul
                 style={{
                   lineHeight: "1.8",
-                  color: "#cbd5e1",
+                  color: "var(--text-secondary)",
                   paddingLeft: "1.5rem",
                 }}
               >
@@ -975,7 +994,7 @@ const Dashboard = () => {
               <p
                 style={{
                   lineHeight: "1.8",
-                  color: "#cbd5e1",
+                  color: "var(--text-secondary)",
                   marginBottom: "1rem",
                 }}
               >
@@ -1004,7 +1023,7 @@ const Dashboard = () => {
                     margin: 0,
                     paddingLeft: "1.5rem",
                     lineHeight: "1.8",
-                    color: "#cbd5e1",
+                    color: "var(--text-secondary)",
                   }}
                 >
                   <li>
@@ -1025,10 +1044,10 @@ const Dashboard = () => {
               </h3>
               <div
                 style={{
-                  background: "rgba(30, 41, 59, 0.5)",
+                  background: "var(--bg-secondary)",
                   padding: "1.5rem",
                   borderRadius: "8px",
-                  border: "1px solid rgba(255, 255, 255, 0.1)",
+                  border: "1px solid var(--border)",
                 }}
               >
                 <h4
@@ -1043,7 +1062,7 @@ const Dashboard = () => {
                 <p
                   style={{
                     lineHeight: "1.8",
-                    color: "#cbd5e1",
+                    color: "var(--text-secondary)",
                     marginBottom: "1rem",
                   }}
                 >
@@ -1072,7 +1091,7 @@ const Dashboard = () => {
                 <p
                   style={{
                     lineHeight: "1.8",
-                    color: "#cbd5e1",
+                    color: "var(--text-secondary)",
                     marginBottom: "1rem",
                   }}
                 >
@@ -1109,7 +1128,7 @@ const Dashboard = () => {
                 <p
                   style={{
                     lineHeight: "1.8",
-                    color: "#cbd5e1",
+                    color: "var(--text-secondary)",
                     marginBottom: "0.5rem",
                   }}
                 >
@@ -1120,7 +1139,7 @@ const Dashboard = () => {
                 <ul
                   style={{
                     lineHeight: "1.8",
-                    color: "#cbd5e1",
+                    color: "var(--text-secondary)",
                     paddingLeft: "1.5rem",
                     marginBottom: "0.5rem",
                   }}
@@ -1160,7 +1179,7 @@ const Dashboard = () => {
                 <ul
                   style={{
                     lineHeight: "1.8",
-                    color: "#cbd5e1",
+                    color: "var(--text-secondary)",
                     paddingLeft: "1.5rem",
                   }}
                 >
@@ -1186,7 +1205,9 @@ const Dashboard = () => {
                 >
                   3. Geographic Duplicate Management
                 </h4>
-                <p style={{ lineHeight: "1.8", color: "#cbd5e1" }}>
+                <p
+                  style={{ lineHeight: "1.8", color: "var(--text-secondary)" }}
+                >
                   The original dataset contains multiple rows for the same city
                   (one row per university). We created a boolean column{" "}
                   <code
@@ -1216,7 +1237,7 @@ const Dashboard = () => {
                 <p
                   style={{
                     lineHeight: "1.8",
-                    color: "#cbd5e1",
+                    color: "var(--text-secondary)",
                     marginBottom: "0.5rem",
                   }}
                 >
@@ -1225,7 +1246,7 @@ const Dashboard = () => {
                 <ul
                   style={{
                     lineHeight: "1.8",
-                    color: "#cbd5e1",
+                    color: "var(--text-secondary)",
                     paddingLeft: "1.5rem",
                   }}
                 >
@@ -1254,7 +1275,9 @@ const Dashboard = () => {
                 >
                   5. Standardization
                 </h4>
-                <p style={{ lineHeight: "1.8", color: "#cbd5e1" }}>
+                <p
+                  style={{ lineHeight: "1.8", color: "var(--text-secondary)" }}
+                >
                   All numeric columns converted to Float format and rounded to 2
                   decimal places for consistency.
                 </p>
@@ -1329,37 +1352,41 @@ const Dashboard = () => {
               </h3>
               <div
                 style={{
-                  background: "rgba(30, 41, 59, 0.5)",
+                  background: "var(--bg-secondary)",
                   padding: "1.5rem",
                   borderRadius: "8px",
-                  border: "1px solid rgba(255, 255, 255, 0.1)",
+                  border: "1px solid var(--border)",
                 }}
               >
                 <ul
                   style={{
                     lineHeight: "1.8",
-                    color: "#cbd5e1",
+                    color: "var(--text-secondary)",
                     paddingLeft: "1.5rem",
                     margin: 0,
                   }}
                 >
                   <li style={{ marginBottom: "0.75rem" }}>
-                    <strong style={{ color: "#cbd5e1" }}>GitHub:</strong>{" "}
-                    <span style={{ color: "#94a3b8" }}>
+                    <strong style={{ color: "var(--text-secondary)" }}>
+                      GitHub:
+                    </strong>{" "}
+                    <span style={{ color: "var(--text-secondary)" }}>
                       Suivi des tâches, Issues, Milestones.
                     </span>
                   </li>
                   <li style={{ marginBottom: "0.75rem" }}>
-                    <strong style={{ color: "#cbd5e1" }}>
+                    <strong style={{ color: "var(--text-secondary)" }}>
                       WhatsApp / Discord:
                     </strong>{" "}
-                    <span style={{ color: "#94a3b8" }}>
+                    <span style={{ color: "var(--text-secondary)" }}>
                       Communication rapide.
                     </span>
                   </li>
                   <li>
-                    <strong style={{ color: "#cbd5e1" }}>Google Drive:</strong>{" "}
-                    <span style={{ color: "#94a3b8" }}>
+                    <strong style={{ color: "var(--text-secondary)" }}>
+                      Google Drive:
+                    </strong>{" "}
+                    <span style={{ color: "var(--text-secondary)" }}>
                       Partage de documents.
                     </span>
                   </li>
@@ -1378,7 +1405,13 @@ const Dashboard = () => {
               <h3 style={{ color: "#14b8a6", marginBottom: "0.75rem" }}>
                 Technology Stack
               </h3>
-              <p style={{ lineHeight: "1.8", color: "#cbd5e1", margin: 0 }}>
+              <p
+                style={{
+                  lineHeight: "1.8",
+                  color: "var(--text-secondary)",
+                  margin: 0,
+                }}
+              >
                 Built with <strong>React</strong>, <strong>D3.js</strong>, and
                 modern web technologies to provide an interactive and responsive
                 data visualization experience.
