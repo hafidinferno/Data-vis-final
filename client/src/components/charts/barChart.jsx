@@ -42,7 +42,7 @@ const BarChart = ({ data, metric, label }) => {
             .attr('y', d => y(d.city))
             .attr('width', d => x(d[metric] || 0) - x(0))
             .attr('height', y.bandwidth())
-            .attr('fill', '#6366f1') // Primary color
+            .attr('fill', 'var(--primary)') // Primary color
             .attr('rx', 4);
 
         // Labels (Value)
@@ -55,7 +55,7 @@ const BarChart = ({ data, metric, label }) => {
             .attr('dy', '0.35em')
             .text(d => d[metric] ? `$${d[metric].toFixed(2)}` : 'N/A')
             .attr('font-size', '12px')
-            .attr('fill', '#94a3b8');
+            .attr('fill', 'var(--text-muted)');
 
         // Axes
         const xAxis = svg.append('g')
@@ -63,8 +63,8 @@ const BarChart = ({ data, metric, label }) => {
             .call(d3.axisBottom(x).ticks(5).tickFormat(d => `$${d}`))
             .call(g => g.select('.domain').remove());
         
-        xAxis.selectAll('text').attr('fill', '#94a3b8');
-        xAxis.selectAll('line').attr('stroke', '#475569');
+        xAxis.selectAll('text').attr('fill', 'var(--text-muted)');
+        xAxis.selectAll('line').attr('stroke', 'var(--border)');
 
         const yAxis = svg.append('g')
             .attr('transform', `translate(${margin.left},0)`)
@@ -73,9 +73,9 @@ const BarChart = ({ data, metric, label }) => {
         yAxis.selectAll('text')
             .style('font-size', '12px')
             .style('font-weight', '500')
-            .style('fill', '#f8fafc'); // Brighter text for city names
+            .style('fill', 'var(--text-main)'); 
         
-        yAxis.selectAll('line').attr('stroke', '#475569');
+        yAxis.selectAll('line').attr('stroke', 'var(--border)');
         yAxis.select('.domain').remove();
 
         // X-Axis Label
@@ -84,7 +84,7 @@ const BarChart = ({ data, metric, label }) => {
             .attr('y', height - 5)
             .attr('text-anchor', 'middle')
             .attr('font-size', '12px')
-            .attr('fill', '#94a3b8')
+            .attr('fill', 'var(--text-muted)')
             .text(label);
 
     }, [data, metric, label]);

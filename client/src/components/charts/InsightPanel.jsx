@@ -49,23 +49,23 @@ const InsightPanel = ({ cityData, showSavings = false }) => {
         height: "100%",
         width: "100%",
         flex: 1,
-        borderColor: "#cbd5e1",
+        borderColor: "var(--border)",
         boxShadow:
-          "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+          "var(--glass-shadow)",
         display: "flex",
         flexDirection: "column",
-        background: "#ffffff",
-        color: "#000000",
+        background: "var(--bg-card)",
+        color: "var(--text-main)",
       }}
     >
       <div
         style={{
-          borderBottom: "1px solid #e2e8f0",
+          borderBottom: "1px solid var(--border)",
           paddingBottom: "1rem",
           marginBottom: "1rem",
         }}
       >
-        <h2 style={{ margin: 0, fontSize: "1.8rem", color: "#000000" }}>
+        <h2 style={{ margin: 0, fontSize: "1.8rem", color: "var(--text-main)" }}>
           {cityData.city}
         </h2>
         <div
@@ -73,7 +73,7 @@ const InsightPanel = ({ cityData, showSavings = false }) => {
             textTransform: "uppercase",
             letterSpacing: "1px",
             fontSize: "0.8rem",
-            color: "#64748b",
+            color: "var(--text-muted)",
             fontWeight: "600",
           }}
         >
@@ -94,16 +94,16 @@ const InsightPanel = ({ cityData, showSavings = false }) => {
           style={{
             padding: "1rem",
             borderRadius: "0.5rem",
-            border: "1px solid #e2e8f0",
+            border: "1px solid var(--border)",
           }}
         >
           <div
-            style={{ fontSize: "0.8rem", color: "#64748b", fontWeight: "600" }}
+            style={{ fontSize: "0.8rem", color: "var(--text-muted)", fontWeight: "600" }}
           >
             Monthly Cost
           </div>
           <div
-            style={{ fontSize: "1.5rem", fontWeight: "bold", color: "#000000" }}
+            style={{ fontSize: "1.5rem", fontWeight: "bold", color: "var(--text-main)" }}
           >
             ${totalCost.toFixed(0)}
           </div>
@@ -113,16 +113,16 @@ const InsightPanel = ({ cityData, showSavings = false }) => {
             padding: "1rem",
             paddingBottom: "0.5rem",
             borderRadius: "0.5rem",
-            border: "1px solid #e2e8f0",
+            border: "1px solid var(--border)",
           }}
         >
           <div
-            style={{ fontSize: "0.8rem", color: "#64748b", fontWeight: "600" }}
+            style={{ fontSize: "0.8rem", color: "var(--text-muted)", fontWeight: "600" }}
           >
             Internet (60 Mbps+)
           </div>
           <div
-            style={{ fontSize: "1.5rem", fontWeight: "bold", color: "#000000" }}
+            style={{ fontSize: "1.5rem", fontWeight: "bold", color: "var(--text-main)" }}
           >
             ${internet.toFixed(0)}
           </div>
@@ -138,7 +138,7 @@ const InsightPanel = ({ cityData, showSavings = false }) => {
               marginBottom: "0.5rem",
             }}
           >
-            <span style={{ color: "#64748b", fontWeight: "600" }}>
+            <span style={{ color: "var(--text-muted)", fontWeight: "600" }}>
               Quality of Life
             </span>
             <span style={{ color: qolColor, fontWeight: "bold" }}>
@@ -149,7 +149,7 @@ const InsightPanel = ({ cityData, showSavings = false }) => {
             style={{
               width: "100%",
               height: "8px",
-              background: "#e2e8f0",
+              background: "var(--border)",
               borderRadius: "4px",
               overflow: "hidden",
             }}
@@ -166,7 +166,7 @@ const InsightPanel = ({ cityData, showSavings = false }) => {
           <div
             style={{
               fontSize: "0.8rem",
-              color: "#64748b",
+              color: "var(--text-muted)",
               marginTop: "5px",
               textAlign: "right",
             }}
@@ -185,7 +185,7 @@ const InsightPanel = ({ cityData, showSavings = false }) => {
               marginBottom: "0.5rem",
             }}
           >
-            <span style={{ color: "#64748b", fontWeight: "600" }}>
+            <span style={{ color: "var(--text-muted)", fontWeight: "600" }}>
               Savings Potential
             </span>
             <span
@@ -201,7 +201,7 @@ const InsightPanel = ({ cityData, showSavings = false }) => {
             style={{
               width: "100%",
               height: "8px",
-              background: "#e2e8f0",
+              background: "var(--border)",
               borderRadius: "4px",
               overflow: "hidden",
             }}
@@ -218,7 +218,7 @@ const InsightPanel = ({ cityData, showSavings = false }) => {
           <div
             style={{
               fontSize: "0.8rem",
-              color: "#64748b",
+              color: "var(--text-muted)",
               marginTop: "5px",
               textAlign: "right",
             }}
@@ -231,9 +231,9 @@ const InsightPanel = ({ cityData, showSavings = false }) => {
       <h4
         style={{
           marginBottom: "1rem",
-          borderTop: "1px solid #e2e8f0",
+          borderTop: "1px solid var(--border)",
           paddingTop: "1rem",
-          color: "#000000",
+          color: "var(--text-main)",
           fontSize: "1.1rem",
         }}
       >
@@ -247,10 +247,10 @@ const InsightPanel = ({ cityData, showSavings = false }) => {
           alignItems: "center",
           justifyContent: "space-between",
           marginBottom: "0.8rem",
-          color: "#000000",
+          color: "var(--text-main)",
         }}
       >
-        <span style={{ color: "#475569" }}>🏠 Rent (Outside)</span>
+        <span style={{ color: "var(--text-muted)" }}>🏠 Rent (Outside)</span>
         <span style={{ fontWeight: "600" }}>
           ${cityData.apt_1bed_outside_center?.toFixed(0)}
         </span>
@@ -262,10 +262,10 @@ const InsightPanel = ({ cityData, showSavings = false }) => {
           alignItems: "center",
           justifyContent: "space-between",
           marginBottom: "0.8rem",
-          color: "#000000",
+          color: "var(--text-main)",
         }}
       >
-        <span style={{ color: "#475569" }}>🍔 Cheap Meal</span>
+        <span style={{ color: "var(--text-muted)" }}>🍔 Cheap Meal</span>
         <span style={{ fontWeight: "600" }}>
           ${cityData.meal_inexpensive?.toFixed(2)}
         </span>
@@ -277,10 +277,10 @@ const InsightPanel = ({ cityData, showSavings = false }) => {
           alignItems: "center",
           justifyContent: "space-between",
           marginBottom: "0.8rem",
-          color: "#000000",
+          color: "var(--text-main)",
         }}
       >
-        <span style={{ color: "#475569" }}>🍺 Beer</span>
+        <span style={{ color: "var(--text-muted)" }}>🍺 Beer</span>
         <span style={{ fontWeight: "600" }}>
           ${cityData.beer_domestic_market?.toFixed(2)}
         </span>
@@ -291,10 +291,10 @@ const InsightPanel = ({ cityData, showSavings = false }) => {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          color: "#000000",
+          color: "var(--text-main)",
         }}
       >
-        <span style={{ color: "#475569" }}>🚍 Transport</span>
+        <span style={{ color: "var(--text-muted)" }}>🚍 Transport</span>
         <span style={{ fontWeight: "600" }}>
           ${cityData.pass_monthly?.toFixed(0)}
         </span>

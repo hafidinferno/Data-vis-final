@@ -18,8 +18,9 @@ import {
   BarChart3,
   Info,
 } from "lucide-react";
+import ThemeToggle from "./ThemeToggle";
 
-const Dashboard = () => {
+const Dashboard = ({ theme, toggleTheme }) => {
   const [cities, setCities] = useState([]);
   const [countries, setCountries] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -229,6 +230,14 @@ const Dashboard = () => {
                 </button>
               );
             })}
+            <div
+              style={{
+                width: "1px",
+                background: "var(--border)",
+                margin: "0 0.5rem",
+              }}
+            />
+            <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
           </nav>
         </div>
       </header>
@@ -297,11 +306,11 @@ const Dashboard = () => {
                       )
                     }
                     style={{
-                      border: "1px solid #cbd5e1",
+                      border: "1px solid var(--border)",
                       borderRadius: "8px",
                       padding: "0.5rem 2.2rem 0.5rem 1rem",
-                      color: "#1e293b",
-                      background: "#f8fafc",
+                      color: "var(--text-main)",
+                      background: "var(--bg-card)",
                       fontSize: "0.95rem",
                       cursor: "pointer",
                       appearance: "none",
@@ -327,7 +336,7 @@ const Dashboard = () => {
                     height="18"
                     viewBox="0 0 24 24"
                     fill="none"
-                    stroke="#475569"
+                    stroke="var(--text-muted)"
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -490,17 +499,17 @@ const Dashboard = () => {
                       setTipCity(cities.find((c) => c.city === e.target.value))
                     }
                     style={{
-                      border: "1px solid #cbd5e1",
+                      border: "1px solid var(--border)",
                       borderRadius: "8px",
                       padding: "0.3rem 2rem 0.3rem 0.8rem",
-                      color: "#1e293b",
+                      color: "var(--text-main)",
                       fontSize: "0.85rem",
                       cursor: "pointer",
                       appearance: "none",
                       WebkitAppearance: "none",
                       MozAppearance: "none",
                       outline: "none",
-                      background: "#f8fafc",
+                      background: "var(--bg-card)",
                       width: "100%",
                     }}
                   >
@@ -521,7 +530,7 @@ const Dashboard = () => {
                     height="16"
                     viewBox="0 0 24 24"
                     fill="none"
-                    stroke="#475569"
+                    stroke="var(--text-muted)"
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -550,7 +559,7 @@ const Dashboard = () => {
                       key={i}
                       style={{
                         padding: "1rem",
-                        background: "#f8fafc",
+                        background: "var(--bg-card)",
                         borderLeft: `4px solid ${
                           tip.type === "warning"
                             ? "#ef4444"
@@ -558,9 +567,9 @@ const Dashboard = () => {
                             ? "#10b981"
                             : "#6366f1"
                         }`,
-                        borderTop: "1px solid #e2e8f0",
-                        borderRight: "1px solid #e2e8f0",
-                        borderBottom: "1px solid #e2e8f0",
+                        borderTop: "1px solid var(--border)",
+                        borderRight: "1px solid var(--border)",
+                        borderBottom: "1px solid var(--border)",
                         borderRadius: "8px",
                       }}
                     >
@@ -667,9 +676,9 @@ const Dashboard = () => {
                       padding: "12px 40px 12px 16px",
                       borderRadius: "8px",
                       // Light Theme Style for Readability
-                      border: "1px solid #cbd5e1",
-                      background: "#f8fafc",
-                      color: "#1e293b",
+                      border: "1px solid var(--border)",
+                      background: "var(--bg-card)",
+                      color: "var(--text-main)",
                       fontSize: "0.95rem",
                       fontWeight: "600",
                       appearance: "none",
@@ -753,7 +762,7 @@ const Dashboard = () => {
               >
                 <h3
                   style={{
-                    color: "#000000",
+                    color: "var(--text-main)",
                     marginBottom: "2rem",
                     fontSize: "1.2rem",
                     fontWeight: "bold",

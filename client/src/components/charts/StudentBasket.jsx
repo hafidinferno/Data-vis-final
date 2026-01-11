@@ -180,9 +180,9 @@ const StudentBasket = ({
               width: "100%",
               padding: "12px",
               borderRadius: "8px",
-              border: "1px solid #cbd5e1",
-              background: "#f8fafc",
-              color: "#1e293b",
+              border: "1px solid var(--border)",
+              background: "var(--bg-card)",
+              color: "var(--text-main)",
             }}
           />
           {searchTerm && (
@@ -194,13 +194,13 @@ const StudentBasket = ({
                 left: 0,
                 right: 0,
                 marginTop: "4px",
-                background: "#f8fafc",
-                border: "1px solid #cbd5e1",
+                background: "var(--bg-card)",
+                border: "1px solid var(--border)",
                 borderRadius: "8px",
                 zIndex: 50,
                 maxHeight: "200px",
                 overflowY: "auto",
-                color: "#1e293b",
+                color: "var(--text-main)",
                 boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
               }}
             >
@@ -216,7 +216,7 @@ const StudentBasket = ({
                     style={{
                       padding: "10px",
                       cursor: "pointer",
-                      borderBottom: "1px solid #e2e8f0",
+                      borderBottom: "1px solid var(--border)",
                     }}
                     className="hover-bg"
                   >

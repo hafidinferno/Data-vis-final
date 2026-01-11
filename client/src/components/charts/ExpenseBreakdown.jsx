@@ -67,7 +67,7 @@ const ExpenseBreakdown = ({ cityData }) => {
       .join("path")
       .attr("d", arc)
       .attr("fill", (d) => d.data.color)
-      .attr("stroke", "#0f172a")
+      .attr("stroke", "var(--bg-card)")
       .style("stroke-width", "4px")
       .style("cursor", "pointer")
       .on("mouseenter", function (e, d) {
@@ -93,7 +93,7 @@ const ExpenseBreakdown = ({ cityData }) => {
       .attr("dy", "-0.2em")
       .style("font-size", "24px")
       .style("font-weight", "bold")
-      .style("fill", "#1e293b")
+      .style("fill", "var(--text-main)")
       .text(`$${total.toFixed(0)}`);
 
     g.append("text")
@@ -101,7 +101,7 @@ const ExpenseBreakdown = ({ cityData }) => {
       .attr("text-anchor", "middle")
       .attr("dy", "1.2em")
       .style("font-size", "12px")
-      .style("fill", "#475569")
+      .style("fill", "var(--text-muted)")
       .text("Total / Mo");
   }, [cityData]);
 
@@ -128,7 +128,7 @@ const ExpenseBreakdown = ({ cityData }) => {
                 alignItems: "center",
                 gap: "0.25rem",
                 fontSize: "0.8rem",
-                color: "#1e293b",
+                color: "var(--text-main)",
               }}
             >
               <div

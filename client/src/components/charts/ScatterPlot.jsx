@@ -102,8 +102,8 @@ const ScatterPlot = ({
             yAxisG.call(d3.axisLeft(newY).ticks(10, "$.0f"));
             
             // Style Axes Text
-            svg.selectAll('.tick text').attr('fill', '#94a3b8');
-            svg.selectAll('.domain, .tick line').attr('stroke', '#475569');
+            svg.selectAll('.tick text').attr('fill', 'var(--text-muted)');
+            svg.selectAll('.domain, .tick line').attr('stroke', 'var(--border)');
 
             mainG.selectAll('.ref-line-x')
                 .attr('x1', newX(medianX))
@@ -125,7 +125,7 @@ const ScatterPlot = ({
             .attr('x2', xScale(medianX))
             .attr('y1', margin.top)
             .attr('y2', height - margin.bottom)
-            .attr('stroke', '#475569')
+            .attr('stroke', 'var(--border)')
             .attr('stroke-dasharray', '4')
             .attr('stroke-width', 2);
 
@@ -135,7 +135,7 @@ const ScatterPlot = ({
             .attr('x2', width - margin.right)
             .attr('y1', yScale(medianY))
             .attr('y2', yScale(medianY))
-            .attr('stroke', '#475569')
+            .attr('stroke', 'var(--border)')
             .attr('stroke-dasharray', '4')
             .attr('stroke-width', 2);
 
@@ -147,7 +147,7 @@ const ScatterPlot = ({
             .attr("cy", d => yScale(d[metricY]))
             .attr("r", 6) // Larger default size
             .attr("fill", d => colorScale(d[metricX] / d[metricY]))
-            .attr("stroke", "#0f172a")
+            .attr("stroke", "var(--bg-main)")
             .attr("stroke-width", 1)
             .attr("opacity", 0.9)
             .on("mouseenter", (event, d) => {
@@ -195,15 +195,15 @@ const ScatterPlot = ({
         yAxisG.call(d3.axisLeft(yScale).ticks(10, "$.0f"));
         
         // Initial Style
-        svg.selectAll('.tick text').attr('fill', '#94a3b8');
-        svg.selectAll('.domain, .tick line').attr('stroke', '#475569');
+        svg.selectAll('.tick text').attr('fill', 'var(--text-muted)');
+        svg.selectAll('.domain, .tick line').attr('stroke', 'var(--border)');
 
         // Labels
         svg.append("text")
             .attr("x", width / 2)
             .attr("y", height - 15)
             .attr("text-anchor", "middle")
-            .style("fill", "#94a3b8")
+            .style("fill", "var(--text-muted)")
             .style("font-size", "14px")
             .text(labelX);
 
@@ -212,7 +212,7 @@ const ScatterPlot = ({
             .attr("x", -height / 2)
             .attr("y", 20)
             .attr("text-anchor", "middle")
-            .style("fill", "#94a3b8")
+            .style("fill", "var(--text-muted)")
             .style("font-size", "14px")
             .text(labelY);
 
@@ -257,7 +257,7 @@ const ScatterPlot = ({
                         <span>{labelY}:</span>
                         <span className="tooltip-value">${tooltip.data[metricY].toFixed(0)}</span>
                     </div>
-                    <div className="tooltip-row" style={{marginTop: '8px', paddingTop: '8px', borderTop: '1px dashed #e2e8f0'}}>
+                    <div className="tooltip-row" style={{marginTop: '8px', paddingTop: '8px', borderTop: '1px dashed var(--border)'}}>
                         <span>Ratio:</span>
                         <span className="tooltip-value" style={{
                             color: tooltip.ratio > 1.5 ? '#10b981' : tooltip.ratio < 1.0 ? '#ef4444' : '#f59e0b'

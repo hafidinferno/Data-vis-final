@@ -747,7 +747,7 @@ const WorldMap = ({ countryData, cities, onHover }) => {
           <div
             style={{
               fontSize: "10px",
-              color: "#94a3b8",
+              color: "var(--text-muted)",
               textTransform: "uppercase",
               letterSpacing: "1px",
               marginBottom: "8px",
@@ -785,7 +785,7 @@ const WorldMap = ({ countryData, cities, onHover }) => {
               }}
               onMouseEnter={(e) => {
                 if (selectedContinent !== key) {
-                  e.target.style.background = "rgba(255,255,255,0.05)";
+                  e.target.style.background = "var(--bg-card-hover)";
                 }
               }}
               onMouseLeave={(e) => {

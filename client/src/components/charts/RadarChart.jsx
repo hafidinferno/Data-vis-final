@@ -62,7 +62,7 @@ const RadarChart = ({ data, metrics, labels }) => {
                 .attr('y1', (d, j) => levelFactor * Math.sin(angleSlice * j - Math.PI / 2))
                 .attr('x2', (d, j) => levelFactor * Math.cos(angleSlice * (j + 1) - Math.PI / 2))
                 .attr('y2', (d, j) => levelFactor * Math.sin(angleSlice * (j + 1) - Math.PI / 2))
-                .attr('stroke', '#334155')
+                .attr('stroke', 'var(--border)')
                 .attr('stroke-width', '1px');
         }
 
@@ -78,7 +78,7 @@ const RadarChart = ({ data, metrics, labels }) => {
             .attr('y1', 0)
             .attr('x2', (d, i) => rScale(1.1) * Math.cos(angleSlice * i - Math.PI / 2))
             .attr('y2', (d, i) => rScale(1.1) * Math.sin(angleSlice * i - Math.PI / 2))
-            .attr('stroke', '#475569')
+            .attr('stroke', 'var(--border)')
             .attr('stroke-width', '1px');
 
         axes.append('text')
@@ -89,7 +89,7 @@ const RadarChart = ({ data, metrics, labels }) => {
             .attr('x', (d, i) => rScale(1.25) * Math.cos(angleSlice * i - Math.PI / 2))
             .attr('y', (d, i) => rScale(1.25) * Math.sin(angleSlice * i - Math.PI / 2))
             .text(d => labels[d] || d)
-            .style('fill', '#94a3b8');
+            .style('fill', 'var(--text-muted)');
 
         // Draw Areas
         const radarLine = d3.lineRadial()
@@ -146,7 +146,7 @@ const RadarChart = ({ data, metrics, labels }) => {
                 {data.map((d, i) => (
                     <div key={i} style={{display:'flex', alignItems:'center', gap:'0.25rem', fontSize:'0.9rem'}}>
                         <div style={{width: 12, height: 12, borderRadius: '50%', backgroundColor: ['#6366f1', '#ec4899', '#14b8a6', '#f59e0b'][i % 4]}}></div>
-                        <span style={{color: '#fff'}}>{d.city}</span>
+                        <span style={{color: 'var(--text-main)'}}>{d.city}</span>
                     </div>
                 ))}
             </div>
