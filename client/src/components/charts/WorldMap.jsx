@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import * as d3 from "d3";
 
 import PropTypes from "prop-types";
@@ -6,39 +6,54 @@ import { CITY_COORDINATES } from "../../data/coordinates";
 import { COUNTRY_TO_CONTINENT } from "../../data/continentMapping";
 import { Globe, RefreshCw, ZoomIn, MapPin } from "lucide-react";
 
-// Custom Color Schemes (User Request)
-const COUNTRY_SCHEME = d3.interpolateRgb("#d6b6f6ff", "#581c87"); // Purple-400 to Purple-900
-const CITY_SCHEME = d3.interpolateRgb("#7a7a7aff", "#000000"); // Zinc-600 to Pure Black
+// Discrete palettes for clearer stepping between ranges
+const COUNTRY_COLORS = ["#e3dee9", "#baaec8", "#907da6", "#514065", "#2e253a"];
+
+const CITY_COLORS = ["#fefce8", "#fde68a", "#facc15", "#eab308", "#b45309"];
 
 const METRICS = {
   cost: {
     label: "Avg Monthly Cost ($)",
     keyCountry: "avg_cost",
     keyCity: "estimated_monthly_cost_single",
-    scheme: COUNTRY_SCHEME,
+    countryPalette: COUNTRY_COLORS,
+    cityPalette: CITY_COLORS,
     reverse: false,
   },
   salary: {
     label: "Avg Monthly Salary ($)",
     keyCountry: "avg_salary",
     keyCity: "salary",
-    scheme: COUNTRY_SCHEME,
+    countryPalette: COUNTRY_COLORS,
+    cityPalette: CITY_COLORS,
     reverse: false,
   },
   rent: {
     label: "1 Bed Apt Outside Center ($)",
     keyCountry: null,
     keyCity: "apt_1bed_outside_center",
-    scheme: CITY_SCHEME,
+    cityPalette: CITY_COLORS,
     reverse: false,
   },
   food: {
     label: "Inexpensive Meal ($)",
     keyCountry: null,
     keyCity: "meal_inexpensive",
-    scheme: CITY_SCHEME,
+    cityPalette: CITY_COLORS,
     reverse: false,
   },
+};
+
+const createQuantileScale = (values, palette, reverse = false) => {
+  const colors = reverse ? [...palette].reverse() : [...palette];
+  if (!values || values.length === 0) {
+    const fallback = colors[0] || "#cccccc";
+    const scale = () => fallback;
+    return { scale, colors: [fallback] };
+  }
+
+  const scale = d3.scaleQuantile().domain(values).range(colors);
+  return { scale, colors };
 };
 
 // Configuration optimisée avec fitSize pour un meilleur centrage
@@ -64,6 +79,7 @@ const CONTINENT_CONFIG = {
     ],
     filterRegion: true,
     fitBounds: true,
+    zoomAdjust: 1.3,
   },
   asia: {
     file: "/data/world.json",
@@ -75,6 +91,7 @@ const CONTINENT_CONFIG = {
     ],
     filterRegion: true,
     fitBounds: true,
+    zoomAdjust: 1.5,
   },
   northamerica: {
     file: "/data/world.json",
@@ -97,6 +114,7 @@ const CONTINENT_CONFIG = {
     ],
     filterRegion: true,
     fitBounds: true,
+    zoomAdjust: 1.2,
   },
   oceania: {
     file: "/data/world.json",
@@ -130,6 +148,35 @@ const WorldMap = ({ countryData, cities, onHover }) => {
   const isDragging = useRef(false);
   const isHovering = useRef(false);
 
+  const config = METRICS[activeMetric];
+  const cityKey = config.keyCity;
+  const countryKey = config.keyCountry;
+  const reverse = config.reverse;
+  const cityPaletteBase = config.cityPalette || CITY_COLORS;
+  const countryPaletteBase = config.countryPalette || COUNTRY_COLORS;
+
+  const cityValues = useMemo(() => {
+    return cities
+      .map((c) => c[cityKey])
+      .filter((value) => typeof value === "number" && value > 0);
+  }, [cities, cityKey]);
+
+  const { scale: cityColorScale, colors: cityPalette } = useMemo(() => {
+    return createQuantileScale(cityValues, cityPaletteBase, reverse);
+  }, [cityValues, cityPaletteBase, reverse]);
+
+  const countryValues = useMemo(() => {
+    if (!countryKey) return [];
+    return countryData
+      .map((c) => c[countryKey])
+      .filter((value) => typeof value === "number" && value > 0);
+  }, [countryData, countryKey]);
+
+  const { scale: countryColorScale, colors: countryPalette } = useMemo(() => {
+    if (!countryKey) return { scale: null, colors: [] };
+    return createQuantileScale(countryValues, countryPaletteBase, reverse);
+  }, [countryValues, countryPaletteBase, reverse, countryKey]);
+
   // Responsive
   useEffect(() => {
     if (!containerRef.current) return;
@@ -150,34 +197,17 @@ const WorldMap = ({ countryData, cities, onHover }) => {
     const svg = d3.select(svgRef.current);
     svg.selectAll("*").remove();
 
-    const config = METRICS[activeMetric];
     const continentConfig = CONTINENT_CONFIG[selectedContinent];
-
-    // Prepare Scales
-    // Prepare Scales
-    // Calculate extent from cities data as the primary reference (usually more granular/wide)
-    const extent = d3.extent(
-      cities.filter((c) => c[config.keyCity] > 0),
-      (d) => d[config.keyCity]
-    );
-    if (!extent[0]) extent[0] = 0;
-    if (!extent[1]) extent[1] = 1000; // Fallback max
-
-    // 1. Scale for Countries (Uses the metric's defined scheme - Purple for Cost/Salary)
-    const countryColorScale = d3
-      .scaleSequential(config.scheme)
-      .domain(config.reverse ? [extent[1], extent[0]] : extent);
-
-    // 2. Scale for Cities (ALWAYS uses CITY_SCHEME - Black/Zinc as requested)
-    const cityColorScale = d3
-      .scaleSequential(CITY_SCHEME)
-      .domain(config.reverse ? [extent[1], extent[0]] : extent);
 
     // Projection setup
     const globeSize = Math.min(width, height) / 2 - 20;
     const projection = continentConfig.projection();
 
-    if (!continentConfig.isGlobe && continentConfig.bounds && !continentConfig.fitBounds) {
+    if (
+      !continentConfig.isGlobe &&
+      continentConfig.bounds &&
+      !continentConfig.fitBounds
+    ) {
       const [[minLon, minLat], [maxLon, maxLat]] = continentConfig.bounds;
       const centerLon = (minLon + maxLon) / 2;
       const centerLat = (minLat + maxLat) / 2;
@@ -246,7 +276,7 @@ const WorldMap = ({ countryData, cities, onHover }) => {
     // Fonction pour vérifier si un pays est dans les limites
     const isInBounds = (feature) => {
       // Always show everything for 'world' view
-      if (selectedContinent === 'world') return true;
+      if (selectedContinent === "world") return true;
 
       const countryName = feature.properties.name;
       // Strict check against our mapping (supports multiple continents per country)
@@ -259,35 +289,39 @@ const WorldMap = ({ countryData, cities, onHover }) => {
 
     // Render Data
     // Using GeoJSON directly (migrated from TopoJSON)
-    d3.json("/data/world-geo.json").then((geojson) => {
-      if (!geojson) return;
+    d3.json("/data/world-geo.json")
+      .then((geojson) => {
+        if (!geojson) return;
 
-      let countries = geojson.features;
+        let countries = geojson.features;
 
-
-      // Filtrer les pays selon la région si nécessaire
-      if (continentConfig.filterRegion) {
-        countries = countries.filter(isInBounds);
-      }
+        // Filtrer les pays selon la région si nécessaire
+        if (continentConfig.filterRegion) {
+          countries = countries.filter(isInBounds);
+        }
 
         // AUTO-AJUSTEMENT pour les vues continentales
+        const zoomFactor = continentConfig.zoomAdjust || 1;
+
         if (continentConfig.fitBounds && continentConfig.bounds) {
           // Créer un polygone correspondant aux limites définies (cropping)
           // au lieu de s'adapter à la géométrie des pays (qui peut être trop vaste)
           const [[minLon, minLat], [maxLon, maxLat]] = continentConfig.bounds;
-          
+
           const boundsPolygon = {
             type: "Feature",
             geometry: {
               type: "Polygon",
-              coordinates: [[
-                [minLon, minLat],
-                [minLon, maxLat],
-                [maxLon, maxLat],
-                [maxLon, minLat],
-                [minLon, minLat]
-              ]]
-            }
+              coordinates: [
+                [
+                  [minLon, minLat],
+                  [minLon, maxLat],
+                  [maxLon, maxLat],
+                  [maxLon, minLat],
+                  [minLon, minLat],
+                ],
+              ],
+            },
           };
 
           // Marges pour le padding
@@ -301,10 +335,16 @@ const WorldMap = ({ countryData, cities, onHover }) => {
 
           // Ajuster la translation pour le padding
           const [tx, ty] = projection.translate();
-          projection.translate([tx + padding, ty + padding]); 
+          projection.translate([tx + padding, ty + padding]);
+
+          if (zoomFactor !== 1) {
+            const [adjTx, adjTy] = projection.translate();
+            projection.scale(projection.scale() * zoomFactor);
+            projection.translate([adjTx, adjTy]);
+          }
         } else if (continentConfig.fitBounds && countries.length > 0) {
-           // Fallback: Fit to countries if no explicit bounds (unlikely given our config)
-           const featureCollection = {
+          // Fallback: Fit to countries if no explicit bounds (unlikely given our config)
+          const featureCollection = {
             type: "FeatureCollection",
             features: countries,
           };
@@ -315,6 +355,12 @@ const WorldMap = ({ countryData, cities, onHover }) => {
           );
           const [tx, ty] = projection.translate();
           projection.translate([tx + padding, ty + padding]);
+
+          if (zoomFactor !== 1) {
+            const [adjTx, adjTy] = projection.translate();
+            projection.scale(projection.scale() * zoomFactor);
+            projection.translate([adjTx, adjTy]);
+          }
         }
 
         // Dynamic country name matching function
@@ -417,8 +463,13 @@ const WorldMap = ({ countryData, cities, onHover }) => {
               cData = findCountryMatch(countryName, countryData);
             }
 
-            if (config.keyCountry && cData && cData[config.keyCountry]) {
-              return d3.color(countryColorScale(cData[config.keyCountry])).darker(0.3);
+            if (
+              config.keyCountry &&
+              countryColorScale &&
+              cData &&
+              typeof cData[config.keyCountry] === "number"
+            ) {
+              return countryColorScale(cData[config.keyCountry]);
             }
             return "var(--fill-country)";
           })
@@ -438,7 +489,7 @@ const WorldMap = ({ countryData, cities, onHover }) => {
         if (continentConfig.filterRegion) {
           // Utiliser COUNTRY_TO_CONTINENT pour le filtrage strict
           cityPoints = cityPoints.filter((c) => {
-            if (selectedContinent === 'world') return true;
+            if (selectedContinent === "world") return true;
             const continent = COUNTRY_TO_CONTINENT[c.country];
             if (Array.isArray(continent)) {
               return continent.includes(selectedContinent);
@@ -451,8 +502,13 @@ const WorldMap = ({ countryData, cities, onHover }) => {
           .selectAll("circle")
           .data(cityPoints)
           .join("circle")
-          .attr("r", 4)
-          .attr("fill", (d) => cityColorScale(d[config.keyCity]))
+          .attr("r", 6)
+          .attr("fill", (d) => {
+            const value = d[config.keyCity];
+            return typeof value === "number"
+              ? cityColorScale(value)
+              : cityPalette[0];
+          })
           .attr("stroke", "#fff")
           .attr("stroke-width", 1.5)
           .attr("cursor", "pointer")
@@ -461,7 +517,7 @@ const WorldMap = ({ countryData, cities, onHover }) => {
             isHovering.current = true;
             d3.select(event.target)
               .attr("stroke", "#facc15")
-              .attr("r", 8)
+              .attr("r", 9)
               .raise();
 
             const [x, y] = d3.pointer(event, containerRef.current);
@@ -469,7 +525,7 @@ const WorldMap = ({ countryData, cities, onHover }) => {
             if (onHover) onHover(d);
           })
           .on("mouseleave", (event) => {
-            d3.select(event.target).attr("stroke", "#fff").attr("r", 4);
+            d3.select(event.target).attr("stroke", "#fff").attr("r", 6);
             setTooltip(null);
             isHovering.current = false;
           });
@@ -570,11 +626,12 @@ const WorldMap = ({ countryData, cities, onHover }) => {
     activeMetric,
     selectedContinent,
     onHover,
+    cityColorScale,
+    cityPalette,
+    countryColorScale,
   ]);
 
-  // Pre-calculate legend values and color scales dynamically
-  const config = METRICS[activeMetric];
-  const legendSteps = 5;
+  // Pre-calculate legend values for legend display
   const numberFormatter = new Intl.NumberFormat("en-US", {
     maximumFractionDigits: 0,
   });
@@ -586,36 +643,30 @@ const WorldMap = ({ countryData, cities, onHover }) => {
     return minStr === maxStr ? `$${minStr}` : `$${minStr} - $${maxStr}`;
   };
 
-  const buildLegendItems = (rawValues, colorScale, darker = false) => {
+  const buildLegendItems = (rawValues, palette) => {
     if (!rawValues.length) return [];
     const sorted = [...rawValues].sort((a, b) => a - b);
-    const thresholds = Array.from({ length: legendSteps + 1 }, (_, idx) =>
-      d3.quantileSorted(sorted, idx / legendSteps)
+    const steps = palette.length;
+    const thresholds = Array.from({ length: steps + 1 }, (_, idx) =>
+      d3.quantileSorted(sorted, idx / steps)
     );
 
     const items = [];
 
-    for (let i = 0; i < legendSteps; i += 1) {
+    for (let i = 0; i < steps; i += 1) {
       const start = thresholds[i];
       const end = thresholds[i + 1];
       if (start == null || end == null) continue;
 
       const valuesInRange = sorted.filter((value) =>
-        i === legendSteps - 1
+        i === steps - 1
           ? value >= start && value <= end
           : value >= start && value < end
       );
 
       if (!valuesInRange.length) continue;
 
-      const midValue = valuesInRange[Math.floor(valuesInRange.length / 2)];
-      const baseColor = colorScale(midValue);
-      const colorObj = d3.color(baseColor);
-      const color = colorObj
-        ? darker
-          ? colorObj.darker(0.3).formatHex()
-          : colorObj.formatHex()
-        : "#999999";
+      const color = palette[i] || palette[palette.length - 1];
 
       const roundedStart = Math.round(start);
       const roundedEnd = Math.round(end);
@@ -634,52 +685,11 @@ const WorldMap = ({ countryData, cities, onHover }) => {
     return items;
   };
 
-  const cityValues = cities
-    .map((c) => c[config.keyCity])
-    .filter((value) => typeof value === "number" && value > 0);
-
-  const cityMin = cityValues.length ? d3.min(cityValues) : 0;
-  const cityMax = cityValues.length ? d3.max(cityValues) : 1;
-  const cityDomainMin = cityMin;
-  const cityDomainMax = cityMax === cityMin ? cityMin + 1 : cityMax;
-
-  const cityColorScale = d3
-    .scaleSequential(CITY_SCHEME)
-    .domain(
-      config.reverse
-        ? [cityDomainMax, cityDomainMin]
-        : [cityDomainMin, cityDomainMax]
-    );
-
-  const cityLegendItems = buildLegendItems(cityValues, cityColorScale);
+  const cityLegendItems = buildLegendItems(cityValues, cityPalette);
 
   let countryLegendItems = [];
-  if (config.keyCountry) {
-    const countryValues = countryData
-      .map((c) => c[config.keyCountry])
-      .filter((value) => typeof value === "number" && value > 0);
-
-    if (countryValues.length) {
-      const countryMin = d3.min(countryValues);
-      const countryMax = d3.max(countryValues);
-      const countryDomainMin = countryMin;
-      const countryDomainMax =
-        countryMax === countryMin ? countryMin + 1 : countryMax;
-
-      const countryColorScale = d3
-        .scaleSequential(config.scheme)
-        .domain(
-          config.reverse
-            ? [countryDomainMax, countryDomainMin]
-            : [countryDomainMin, countryDomainMax]
-        );
-
-      countryLegendItems = buildLegendItems(
-        countryValues,
-        countryColorScale,
-        true
-      );
-    }
+  if (config.keyCountry && countryValues.length) {
+    countryLegendItems = buildLegendItems(countryValues, countryPalette);
   }
 
   const cityIndicatorColor =
@@ -894,13 +904,15 @@ const WorldMap = ({ countryData, cities, onHover }) => {
       >
         <div
           style={{
-            background: "rgba(0,0,0,0.6)",
+            background: "rgba(255,255,255,0.92)",
             padding: "6px 12px",
             borderRadius: "6px",
-            color: "#94a3b8",
+            color: "var(--text-secondary)",
             fontSize: "11px",
             textAlign: "right",
-            backdropFilter: "blur(4px)",
+            backdropFilter: "blur(8px)",
+            border: "1px solid var(--border)",
+            boxShadow: "0 6px 16px rgba(15,23,42,0.08)",
           }}
         >
           <div
@@ -913,11 +925,13 @@ const WorldMap = ({ countryData, cities, onHover }) => {
           >
             {CONTINENT_CONFIG[selectedContinent].isGlobe ? (
               <>
-                <RefreshCw size={12} /> Glisser pour Rotation
+                <RefreshCw size={12} color="var(--text-secondary)" /> Glisser
+                pour Rotation
               </>
             ) : (
               <>
-                <ZoomIn size={12} /> Zoom &amp; Glisser pour Déplacer
+                <ZoomIn size={12} color="var(--text-secondary)" /> Zoom &amp;
+                Glisser pour Déplacer
               </>
             )}
           </div>

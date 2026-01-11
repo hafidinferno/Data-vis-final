@@ -497,7 +497,7 @@ const Dashboard = () => {
           </section>
 
           <div className="grid-cols-2">
-            <section className="card">
+            <section className="card" style={{ marginBottom: "1.5rem" }}>
               <h3>🏠 Rent vs. Part-Time Salary</h3>
               <p className="text-muted">
                 Can you pay rent with a local job? High Value areas (Green/Blue)
@@ -598,6 +598,9 @@ const Dashboard = () => {
                             ? "#10b981"
                             : "#6366f1"
                         }`,
+                        borderTop: "1px solid #e2e8f0",
+                        borderRight: "1px solid #e2e8f0",
+                        borderBottom: "1px solid #e2e8f0",
                         borderRadius: "8px",
                       }}
                     >
