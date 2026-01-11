@@ -104,15 +104,14 @@ const Dashboard = () => {
       <header
         className="modern-header"
         style={{
-          position: "sticky",
-          top: 0,
           zIndex: 100,
           background: "var(--bg-card)",
           backdropFilter: "blur(12px)",
-          borderBottom: "1px solid var(--border)",
+          border: "1px solid var(--border)",
           padding: "1rem 2rem",
           marginBottom: "2rem",
           boxShadow: "0 4px 6px rgba(0, 0, 0, 0.05)",
+          borderRadius: "12px",
         }}
       >
         <div
@@ -247,17 +246,21 @@ const Dashboard = () => {
                       activeTab === tab.id
                         ? "0 4px 12px rgba(102, 126, 234, 0.3)"
                         : "none",
+                    userSelect: "none",
+                    WebkitUserSelect: "none",
+                    MozUserSelect: "none",
+                    msUserSelect: "none",
                   }}
                   onMouseEnter={(e) => {
                     if (activeTab !== tab.id) {
-                      e.target.style.background = "var(--bg-card-hover)";
-                      e.target.style.color = "var(--text-main)";
+                      e.currentTarget.style.background = "var(--bg-card-hover)";
+                      e.currentTarget.style.color = "var(--text-main)";
                     }
                   }}
                   onMouseLeave={(e) => {
                     if (activeTab !== tab.id) {
-                      e.target.style.background = "transparent";
-                      e.target.style.color = "var(--text-muted)";
+                      e.currentTarget.style.background = "transparent";
+                      e.currentTarget.style.color = "var(--text-muted)";
                     }
                   }}
                 >
@@ -295,28 +298,28 @@ const Dashboard = () => {
             />
           </section>
 
-          <div className="grid-cols-2">
-            <section style={{ display: "flex", width: "100%" }}>
-              <InsightPanel cityData={hoveredCity} />
-            </section>
+          <section
+            style={{ display: "flex", width: "100%", marginBottom: "2rem" }}
+          >
+            <InsightPanel cityData={hoveredCity} />
+          </section>
 
-            <section className="card">
-              <h2>Purchasing Power Parity</h2>
-              <p className="text-muted" style={{ marginBottom: "1rem" }}>
-                Correlation between Avg Salary and Living Costs. Cities in the
-                bottom-right offer the best quality of life (High Salary, Low
-                Cost).
-              </p>
-              <ScatterPlot data={cities} />
-            </section>
-          </div>
+          <section className="card">
+            <h2>Purchasing Power Parity</h2>
+            <p className="text-muted" style={{ marginBottom: "1rem" }}>
+              Correlation between Avg Salary and Living Costs. Cities in the
+              bottom-right offer the best quality of life (High Salary, Low
+              Cost).
+            </p>
+            <ScatterPlot data={cities} />
+          </section>
         </div>
       )}
 
       {activeTab === "insights" && (
         <div className="animate-fade-in">
           <div className="grid-cols-2">
-            <section className="card">
+            <section className="card" style={{ marginBottom: "1.75rem" }}>
               <h2>🔍 Analyze a City</h2>
               <div style={{ margin: "1rem 0" }}>
                 <label
@@ -639,9 +642,6 @@ const Dashboard = () => {
             className="card"
             style={{
               marginBottom: "1.5rem",
-              background: "rgba(30, 41, 59, 0.7)",
-              border: "1px solid rgba(255, 255, 255, 0.1)",
-              backdropFilter: "blur(10px)",
             }}
           >
             <div
@@ -652,7 +652,7 @@ const Dashboard = () => {
                 flexWrap: "wrap",
                 gap: "1rem",
                 marginBottom: "1.5rem",
-                borderBottom: "1px solid rgba(255,255,255,0.1)",
+                borderBottom: "1px solid var(--border)",
                 paddingBottom: "1rem",
               }}
             >
@@ -772,131 +772,132 @@ const Dashboard = () => {
                 </div>
               ))}
             </div>
-          </section>
 
-          {/* Analysis Grid */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(12, 1fr)",
-              gap: "2.5rem",
-              marginTop: "2rem",
-            }}
-          >
-            {/* Left: Lifestyle Radar - Spans 5 columns */}
+            {/* Analysis Grid */}
             <div
               style={{
-                gridColumn: "span 5",
-                paddingRight: "1rem",
-                borderRight: "1px solid rgba(255, 255, 255, 0.1)",
+                display: "grid",
+                gridTemplateColumns: "repeat(12, 1fr)",
+                gap: "2.5rem",
+                marginTop: "2rem",
               }}
             >
-              <h3
-                style={{
-                  color: "#000000",
-                  marginBottom: "2rem",
-                  fontSize: "1.2rem",
-                  fontWeight: "bold",
-                }}
-              >
-                Lifestyle Profile
-              </h3>
-              <div style={{ padding: "0 1rem" }}>
-                <RadarChart
-                  data={compareCities}
-                  metrics={[
-                    "apt_1bed_city_center",
-                    "mc_meal",
-                    "pass_monthly",
-                    "utilities_basic",
-                    "cinema",
-                    "jeans",
-                  ]}
-                  labels={{
-                    apt_1bed_city_center: "Rent",
-                    mc_meal: "Fast Food",
-                    pass_monthly: "Transport",
-                    utilities_basic: "Utilities",
-                    cinema: "Fun",
-                    jeans: "Clothing",
-                  }}
-                  height={350}
-                />
-              </div>
+              {/* Left: Lifestyle Radar - Spans 5 columns */}
               <div
-                className="text-muted"
                 style={{
-                  textAlign: "center",
-                  marginTop: "2rem",
-                  fontSize: "0.85rem",
-                  fontStyle: "italic",
-                  opacity: 0.7,
+                  gridColumn: "span 5",
                 }}
               >
-                * Values normalized relative to max in comparisons
-              </div>
-            </div>
-
-            {/* Right: Financial Overview - Spans 7 columns */}
-            <div
-              style={{
-                gridColumn: "span 7",
-                display: "flex",
-                flexDirection: "column",
-                gap: "3rem",
-              }}
-            >
-              <div>
                 <h3
                   style={{
                     color: "#000000",
-                    marginBottom: "1.5rem",
+                    marginBottom: "2rem",
                     fontSize: "1.2rem",
                     fontWeight: "bold",
+                    textAlign: "center",
                   }}
                 >
-                  Cost vs Income
+                  Lifestyle Profile
                 </h3>
+                <div style={{ padding: "0 1rem" }}>
+                  <RadarChart
+                    data={compareCities}
+                    metrics={[
+                      "apt_1bed_city_center",
+                      "mc_meal",
+                      "pass_monthly",
+                      "utilities_basic",
+                      "cinema",
+                      "jeans",
+                    ]}
+                    labels={{
+                      apt_1bed_city_center: "Rent",
+                      mc_meal: "Fast Food",
+                      pass_monthly: "Transport",
+                      utilities_basic: "Utilities",
+                      cinema: "Fun",
+                      jeans: "Clothing",
+                    }}
+                    height={350}
+                  />
+                </div>
                 <div
+                  className="text-muted"
                   style={{
-                    padding: "0 1rem",
+                    textAlign: "center",
+                    marginTop: "2rem",
+                    fontSize: "0.85rem",
+                    fontStyle: "italic",
+                    opacity: 0.7,
                   }}
                 >
-                  <BarChart
-                    data={compareCities}
-                    metric="estimated_monthly_cost_single"
-                    label="Monthly Cost of Living ($)"
-                    color="#f43f5e"
-                  />
+                  * Values normalized relative to max in comparisons
                 </div>
               </div>
 
-              <div>
-                <h3
-                  style={{
-                    color: "#000000",
-                    marginBottom: "1.5rem",
-                    fontSize: "1.2rem",
-                    fontWeight: "bold",
-                  }}
-                >
-                  Salary Expectations
-                </h3>
-                <div
-                  style={{
-                    padding: "0 1rem",
-                  }}
-                >
-                  <BarChart
-                    data={compareCities}
-                    metric="salary"
-                    label="Average Monthly Salary ($)"
-                    color="#6366f1"
-                  />
+              {/* Right: Financial Overview - Spans 7 columns */}
+              <div
+                style={{
+                  gridColumn: "span 7",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "3rem",
+                }}
+              >
+                <div>
+                  <h3
+                    style={{
+                      color: "#000000",
+                      marginBottom: "1.5rem",
+                      fontSize: "1.2rem",
+                      fontWeight: "bold",
+                      textAlign: "center",
+                    }}
+                  >
+                    Cost vs Income
+                  </h3>
+                  <div
+                    style={{
+                      padding: "0 1rem",
+                    }}
+                  >
+                    <BarChart
+                      data={compareCities}
+                      metric="estimated_monthly_cost_single"
+                      label="Monthly Cost of Living ($)"
+                      color="#f43f5e"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <h3
+                    style={{
+                      color: "#000000",
+                      marginBottom: "1.5rem",
+                      fontSize: "1.2rem",
+                      fontWeight: "bold",
+                      textAlign: "center",
+                    }}
+                  >
+                    Salary Expectations
+                  </h3>
+                  <div
+                    style={{
+                      padding: "0 1rem",
+                    }}
+                  >
+                    <BarChart
+                      data={compareCities}
+                      metric="salary"
+                      label="Average Monthly Salary ($)"
+                      color="#6366f1"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </section>
         </div>
       )}
 
@@ -1027,12 +1028,34 @@ const Dashboard = () => {
                   }}
                 >
                   <li>
-                    <strong>Global Cost of Living Dataset</strong> -
-                    Comprehensive cost of living data for cities worldwide
+                    <a
+                      href="https://www.kaggle.com/datasets/mvieira101/global-cost-of-living/data"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        color: "var(--primary)",
+                        fontWeight: 600,
+                        textDecoration: "underline",
+                      }}
+                    >
+                      Global Cost of Living Dataset
+                    </a>{" "}
+                    - Comprehensive cost of living data for cities worldwide
                   </li>
                   <li>
-                    <strong>Cost of International Education</strong> -
-                    Educational costs and university information
+                    <a
+                      href="https://www.kaggle.com/datasets/adilshamim8/cost-of-international-education"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        color: "var(--primary)",
+                        fontWeight: 600,
+                        textDecoration: "underline",
+                      }}
+                    >
+                      Cost of International Education
+                    </a>{" "}
+                    - Educational costs and university information
                   </li>
                 </ul>
               </div>

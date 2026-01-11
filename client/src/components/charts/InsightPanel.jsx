@@ -42,12 +42,12 @@ const InsightPanel = ({ cityData }) => {
     <div
       className="card animate-fade-in"
       style={{
-        minHeight: "520px",
         height: "100%",
         width: "100%",
         flex: 1,
         borderColor: "#cbd5e1",
-        boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+        boxShadow:
+          "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
         display: "flex",
         flexDirection: "column",
         background: "#ffffff",
@@ -61,7 +61,9 @@ const InsightPanel = ({ cityData }) => {
           marginBottom: "1rem",
         }}
       >
-        <h2 style={{ margin: 0, fontSize: "1.8rem", color: "#000000" }}>{cityData.city}</h2>
+        <h2 style={{ margin: 0, fontSize: "1.8rem", color: "#000000" }}>
+          {cityData.city}
+        </h2>
         <div
           style={{
             textTransform: "uppercase",
@@ -77,7 +79,12 @@ const InsightPanel = ({ cityData }) => {
 
       <div
         className="grid-cols-2"
-        style={{ gap: "1rem", marginBottom: "1.5rem" }}
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(2, 1fr)",
+          gap: "1.5rem",
+          marginBottom: "1rem",
+        }}
       >
         <div
           style={{
@@ -86,31 +93,40 @@ const InsightPanel = ({ cityData }) => {
             border: "1px solid #e2e8f0",
           }}
         >
-          <div style={{ fontSize: "0.8rem", color: "#64748b", fontWeight: "600" }}>
+          <div
+            style={{ fontSize: "0.8rem", color: "#64748b", fontWeight: "600" }}
+          >
             Monthly Cost
           </div>
-          <div style={{ fontSize: "1.5rem", fontWeight: "bold", color: "#000000" }}>
+          <div
+            style={{ fontSize: "1.5rem", fontWeight: "bold", color: "#000000" }}
+          >
             ${totalCost.toFixed(0)}
           </div>
         </div>
         <div
           style={{
             padding: "1rem",
+            paddingBottom: "0.5rem",
             borderRadius: "0.5rem",
             border: "1px solid #e2e8f0",
           }}
         >
-          <div style={{ fontSize: "0.8rem", color: "#64748b", fontWeight: "600" }}>
+          <div
+            style={{ fontSize: "0.8rem", color: "#64748b", fontWeight: "600" }}
+          >
             Internet (60 Mbps+)
           </div>
-          <div style={{ fontSize: "1.5rem", fontWeight: "bold", color: "#000000" }}>
+          <div
+            style={{ fontSize: "1.5rem", fontWeight: "bold", color: "#000000" }}
+          >
             ${internet.toFixed(0)}
           </div>
         </div>
       </div>
 
       {qol > 0 && (
-        <div style={{ marginBottom: "1.5rem" }}>
+        <div style={{ marginBottom: "2rem" }}>
           <div
             style={{
               display: "flex",

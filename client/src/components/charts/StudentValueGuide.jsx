@@ -339,7 +339,7 @@ const StudentValueGuide = ({ cities, onCitySelect, selectedCity }) => {
 
     xAxis
       .selectAll("text")
-      .attr("fill", "#cbd5e1")
+      .attr("fill", "#475569")
       .attr("font-size", "11px")
       .attr("font-weight", "500")
       .attr("transform", "rotate(-45)")
@@ -358,7 +358,7 @@ const StudentValueGuide = ({ cities, onCitySelect, selectedCity }) => {
         .tickFormat((d) => `$${d >= 1000 ? (d / 1000).toFixed(0) + "k" : d}`)
     );
 
-    yAxis.selectAll("text").attr("fill", "#94a3b8").attr("font-size", "11px");
+    yAxis.selectAll("text").attr("fill", "#475569").attr("font-size", "11px");
 
     yAxis.select(".domain").attr("stroke", "#475569");
     yAxis.selectAll("line").attr("stroke", "#475569");
@@ -369,7 +369,7 @@ const StudentValueGuide = ({ cities, onCitySelect, selectedCity }) => {
       .attr("y", -50)
       .attr("x", -chartHeight / 2)
       .attr("text-anchor", "middle")
-      .attr("fill", "#94a3b8")
+      .attr("fill", "#475569")
       .attr("font-size", "12px")
       .attr("font-weight", "500")
       .text("Amount (USD)");
@@ -403,7 +403,7 @@ const StudentValueGuide = ({ cities, onCitySelect, selectedCity }) => {
         .append("text")
         .attr("x", 22)
         .attr("y", 12)
-        .attr("fill", "#cbd5e1")
+        .attr("fill", "#1e293b")
         .attr("font-size", "12px")
         .attr("font-weight", "500")
         .text(item.label);
@@ -415,7 +415,7 @@ const StudentValueGuide = ({ cities, onCitySelect, selectedCity }) => {
       .attr("x", 0)
       .attr("y", 30)
       .attr("text-anchor", "middle")
-      .attr("fill", "#64748b")
+      .attr("fill", "#475569")
       .attr("font-size", "11px")
       .text("Student Cost = Rent + Food + Transport");
 

@@ -249,36 +249,44 @@ const StudentBasket = ({
           </div>
           <div
             style={{
-              display: "flex",
-              background: "rgba(255,255,255,0.05)",
-              borderRadius: "8px",
-              padding: "4px",
+              display: "grid",
+              gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+              gap: "0.75rem",
             }}
           >
-            {["shared", "studio_out", "studio_in"].map((type) => (
-              <button
-                key={type}
-                onClick={() => setHousingType(type)}
-                style={{
-                  flex: 1,
-                  padding: "8px 4px",
-                  fontSize: "11px",
-                  border: "none",
-                  borderRadius: "6px",
-                  background:
-                    housingType === type ? "var(--primary)" : "transparent",
-                  color: housingType === type ? "#fff" : "#94a3b8",
-                  cursor: "pointer",
-                  transition: "all 0.2s",
-                }}
-              >
-                {type === "shared"
-                  ? "Shared Room"
-                  : type === "studio_out"
-                  ? "Studio (Out)"
-                  : "Studio (Center)"}
-              </button>
-            ))}
+            {["shared", "studio_out", "studio_in"].map((type) => {
+              const isActive = housingType === type;
+              return (
+                <button
+                  key={type}
+                  onClick={() => setHousingType(type)}
+                  style={{
+                    padding: "0.75rem 0.5rem",
+                    fontSize: "0.9rem",
+                    fontWeight: isActive ? "600" : "500",
+                    borderRadius: "10px",
+                    border: isActive
+                      ? "1px solid var(--primary)"
+                      : "1px solid var(--border)",
+                    background: isActive
+                      ? "linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)"
+                      : "var(--bg-secondary)",
+                    color: isActive ? "#fff" : "var(--text-muted)",
+                    cursor: "pointer",
+                    transition: "all 0.25s ease",
+                    boxShadow: isActive
+                      ? "0 8px 20px rgba(99, 102, 241, 0.2)"
+                      : "0 2px 6px rgba(15, 23, 42, 0.04)",
+                  }}
+                >
+                  {type === "shared"
+                    ? "Shared Room"
+                    : type === "studio_out"
+                    ? "Studio (Out)"
+                    : "Studio (Center)"}
+                </button>
+              );
+            })}
           </div>
         </div>
 
@@ -374,7 +382,7 @@ const StudentBasket = ({
             step="1"
             value={coffeeFreq}
             onChange={(e) => setCoffeeFreq(Number(e.target.value))}
-            style={{ width: "100%", accentColor: "#f59e0b" }}
+            style={{ width: "100%", accentColor: "#53442a" }}
           />
         </div>
       </div>

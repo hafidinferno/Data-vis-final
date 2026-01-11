@@ -243,7 +243,28 @@ const CityFinder = ({ cities }) => {
         >
           <button
             onClick={handleSearch}
-            style={{ width: "100%", height: "40px", minHeight: "40px" }}
+            style={{
+              width: "100%",
+              height: "40px",
+              minHeight: "40px",
+              background: "var(--primary)",
+              color: "#fff",
+              border: "none",
+              borderRadius: "8px",
+              fontSize: "0.95rem",
+              fontWeight: "500",
+              cursor: "pointer",
+              transition: "all 0.2s ease",
+              boxShadow: "0 2px 8px rgba(99, 102, 241, 0.25)",
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.transform = "translateY(-1px)";
+              e.target.style.boxShadow = "0 4px 12px rgba(99, 102, 241, 0.35)";
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.transform = "translateY(0)";
+              e.target.style.boxShadow = "0 2px 8px rgba(99, 102, 241, 0.25)";
+            }}
           >
             Find Cities
           </button>
@@ -274,13 +295,14 @@ const CityFinder = ({ cities }) => {
                   fontSize: "1.1rem",
                   fontWeight: "600",
                   marginBottom: "0.5rem",
+                  color: "#1e293b",
                 }}
               >
                 {city.city}
               </div>
               <div
                 style={{
-                  color: "#94a3b8",
+                  color: "#64748b",
                   fontSize: "0.9rem",
                   marginBottom: "0.5rem",
                 }}
@@ -296,8 +318,8 @@ const CityFinder = ({ cities }) => {
                   fontSize: "0.9rem",
                 }}
               >
-                <span style={{ color: "#94a3b8" }}>Cost:</span>
-                <span>
+                <span style={{ color: "#64748b" }}>Cost:</span>
+                <span style={{ color: "#1e293b", fontWeight: "600" }}>
                   {hasCost
                     ? `$${city.estimated_monthly_cost_single.toFixed(0)}`
                     : "N/A"}
@@ -311,8 +333,10 @@ const CityFinder = ({ cities }) => {
                   fontSize: "0.9rem",
                 }}
               >
-                <span style={{ color: "#94a3b8" }}>Salary:</span>
-                <span>{hasSalary ? `$${city.salary.toFixed(0)}` : "N/A"}</span>
+                <span style={{ color: "#64748b" }}>Salary:</span>
+                <span style={{ color: "#1e293b", fontWeight: "600" }}>
+                  {hasSalary ? `$${city.salary.toFixed(0)}` : "N/A"}
+                </span>
               </div>
               <div
                 style={{
@@ -320,11 +344,11 @@ const CityFinder = ({ cities }) => {
                   justifyContent: "space-between",
                   marginTop: "0.5rem",
                   paddingTop: "0.5rem",
-                  borderTop: "1px dashed rgba(255,255,255,0.1)",
+                  borderTop: "1px dashed #cbd5e1",
                   fontSize: "0.9rem",
                 }}
               >
-                <span style={{ color: "#94a3b8" }}>Power:</span>
+                <span style={{ color: "#64748b" }}>Power:</span>
                 <span
                   style={{
                     color:
@@ -341,7 +365,7 @@ const CityFinder = ({ cities }) => {
           <div
             style={{
               textAlign: "center",
-              color: "#94a3b8",
+              color: "#64748b",
               gridColumn: "1/-1",
             }}
           >
