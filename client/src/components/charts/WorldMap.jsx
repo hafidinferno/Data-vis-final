@@ -904,15 +904,15 @@ const WorldMap = ({ countryData, cities, onHover }) => {
       >
         <div
           style={{
-            background: "rgba(255,255,255,0.92)",
+            background: "var(--bg-secondary)",
             padding: "6px 12px",
             borderRadius: "6px",
-            color: "var(--text-secondary)",
+            color: "var(--text-muted)",
             fontSize: "11px",
             textAlign: "right",
             backdropFilter: "blur(8px)",
             border: "1px solid var(--border)",
-            boxShadow: "0 6px 16px rgba(15,23,42,0.08)",
+            boxShadow: "0 6px 16px rgba(15, 23, 42, 0.08)",
           }}
         >
           <div
@@ -925,12 +925,12 @@ const WorldMap = ({ countryData, cities, onHover }) => {
           >
             {CONTINENT_CONFIG[selectedContinent].isGlobe ? (
               <>
-                <RefreshCw size={12} color="var(--text-secondary)" /> Glisser
-                pour Rotation
+                <RefreshCw size={12} color="var(--text-muted)" /> Glisser pour
+                Rotation
               </>
             ) : (
               <>
-                <ZoomIn size={12} color="var(--text-secondary)" /> Zoom &amp;
+                <ZoomIn size={12} color="var(--text-muted)" /> Zoom &amp;
                 Glisser pour Déplacer
               </>
             )}
