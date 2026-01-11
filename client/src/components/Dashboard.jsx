@@ -126,58 +126,18 @@ const Dashboard = () => {
           }}
         >
           {/* LOGO & TITRE - NOUVEAU DESIGN */}
-          <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-            {/* LOGO INNOVANT - Graphique de tendance avec animation */}
-            <div
+          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <img
+              src="/android-chrome-192x192.png"
+              alt="Global Cost of Living logo"
               style={{
                 width: "50px",
                 height: "50px",
-                background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
                 borderRadius: "12px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                boxShadow: "0 4px 12px rgba(102, 126, 234, 0.4)",
-                position: "relative",
-                overflow: "hidden",
+                objectFit: "cover",
+                transform: "rotate(8deg)",
               }}
-            >
-              {/* Effet de brillance animé */}
-              <div
-                style={{
-                  position: "absolute",
-                  top: "-50%",
-                  left: "-50%",
-                  width: "200%",
-                  height: "200%",
-                  background:
-                    "linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent)",
-                  animation: "shine 3s infinite",
-                  pointerEvents: "none",
-                }}
-              ></div>
-
-              {/* Graphique en ligne trending */}
-              <svg width="40" height="40" viewBox="0 0 40 40">
-                <polyline
-                  points="5,30 12,22 18,25 25,15 32,18 38,10"
-                  fill="none"
-                  stroke="white"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  style={{
-                    strokeDasharray: "100",
-                    strokeDashoffset: "100",
-                    animation: "drawLine 2s ease-out forwards",
-                  }}
-                />
-                {/* Points sur la ligne */}
-                <circle cx="12" cy="22" r="2.5" fill="white" opacity="0.9" />
-                <circle cx="25" cy="15" r="2.5" fill="white" />
-                <circle cx="38" cy="10" r="2.5" fill="white" opacity="0.9" />
-              </svg>
-            </div>
+            />
 
             <div>
               <h1
