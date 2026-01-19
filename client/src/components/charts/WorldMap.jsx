@@ -136,7 +136,7 @@ const CONTINENT_CONFIG = {
   },
 };
 
-const WorldMap = ({ countryData, cities, onHover }) => {
+const WorldMap = ({ countryData, cities, onHover, onClick }) => {
   const svgRef = useRef();
   const containerRef = useRef();
   const [tooltip, setTooltip] = useState(null);
@@ -528,6 +528,9 @@ const WorldMap = ({ countryData, cities, onHover }) => {
             d3.select(event.target).attr("stroke", "#fff").attr("r", 6);
             setTooltip(null);
             isHovering.current = false;
+          })
+          .on("click", (event, d) => {
+             if (onClick) onClick(d);
           });
 
         // Update function for animation
@@ -904,15 +907,15 @@ const WorldMap = ({ countryData, cities, onHover }) => {
       >
         <div
           style={{
-            background: "var(--bg-secondary)",
+            background: "rgba(255,255,255,0.92)",
             padding: "6px 12px",
             borderRadius: "6px",
-            color: "var(--text-muted)",
+            color: "var(--text-secondary)",
             fontSize: "11px",
             textAlign: "right",
             backdropFilter: "blur(8px)",
             border: "1px solid var(--border)",
-            boxShadow: "0 6px 16px rgba(15, 23, 42, 0.08)",
+            boxShadow: "0 6px 16px rgba(15,23,42,0.08)",
           }}
         >
           <div
@@ -925,12 +928,12 @@ const WorldMap = ({ countryData, cities, onHover }) => {
           >
             {CONTINENT_CONFIG[selectedContinent].isGlobe ? (
               <>
-                <RefreshCw size={12} color="var(--text-muted)" /> Glisser pour
-                Rotation
+                <RefreshCw size={12} color="var(--text-secondary)" /> Glisser
+                pour Rotation
               </>
             ) : (
               <>
-                <ZoomIn size={12} color="var(--text-muted)" /> Zoom &amp;
+                <ZoomIn size={12} color="var(--text-secondary)" /> Zoom &amp;
                 Glisser pour Déplacer
               </>
             )}
