@@ -42,6 +42,7 @@ const Dashboard = ({ theme, toggleTheme }) => {
   const [studentCities, setStudentCities] = useState([]);
   const [tipCity, setTipCity] = useState(null);
   const [selectedOverviewCity, setSelectedOverviewCity] = useState(null);
+  const [rankingMode, setRankingMode] = useState("cost"); // "cost" or "suitability"
 
   useEffect(() => {
     Promise.all([
@@ -380,25 +381,105 @@ const Dashboard = ({ theme, toggleTheme }) => {
 
       {activeTab === "student" && (
         <div className="animate-fade-in">
+          {/* Header and Formula */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              marginBottom: "1.5rem",
+              flexWrap: "wrap",
+              gap: "1rem",
+            }}
+          >
+            <h2 style={{ margin: 0, fontSize: "1.3rem" }}>🏆 Cheapest Cities for Students</h2>
+            <div
+              style={{
+                background: "var(--bg-card)",
+                padding: "0.5rem 1rem",
+                borderRadius: "8px",
+                fontSize: "0.8rem",
+                color: "var(--text-muted)",
+                border: "1px solid var(--border)",
+              }}
+            >
+              📊 <strong>Total = </strong>Rent + Food (60 meals) + Internet + Transport • USD/month
+            </div>
+          </div>
+
           <div
             style={{
               marginBottom: "2rem",
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+              gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
               gap: "1rem",
             }}
           >
-            {cities
-              .filter(
-                (c) => c.estimated_monthly_cost_single < 1500 && c.internet > 0
-              )
-              .sort(
-                (a, b) =>
-                  b.salary / b.estimated_monthly_cost_single -
-                  a.salary / a.estimated_monthly_cost_single
-              )
-              .slice(0, 4)
-              .map((c, i) => (
+            {(() => {
+              // Compute transparent costs and scores
+              const processedCities = cities
+                .filter(
+                  (c) => c.apt_1bed_outside_center > 0 &&
+                         c.internet > 0 && 
+                         c.meal_inexpensive > 0 &&
+                         c.pass_monthly > 0
+                )
+                .map((c) => {
+                  // Total Student Budget (USD/month)
+                  // Only include the 4 components we display: Rent, Food, Internet, Transport
+                  const rent = c.apt_1bed_outside_center || 0;
+                  const food = (c.meal_inexpensive || 0) * 60; // ~2 meals/day
+                  const internet = c.internet || 0;
+                  const transport = c.pass_monthly || 0;
+                  const totalCost = rent + food + internet + transport;
+
+                  // Data Quality Indicator
+                  const hasQol = c.quality_of_life_index > 0;
+                  const hasSafety = c.safety_index > 0;
+                  const dataQuality = (hasQol && hasSafety) ? "complete" : 
+                                       (hasQol || hasSafety) ? "partial" : "limited";
+
+                  // Confidence factor based on data quality (penalizes incomplete data)
+                  const confidenceFactor = dataQuality === "complete" ? 1.0 : 
+                                           dataQuality === "partial" ? 0.95 : 0.85;
+
+                  // Student Suitability Score (0-100)
+                  // Weights: 45% Budget + 30% Safety + 15% QoL + 10% Internet
+                  const maxCost = 3000;
+                  const budgetScore = Math.max(0, (1 - totalCost / maxCost) * 100);
+                  const qolScore = hasQol ? c.quality_of_life_index : 50;
+                  const safetyScore = hasSafety ? c.safety_index : 50;
+                  const internetScore = Math.max(0, (1 - internet / 100) * 100);
+                  
+                  // Base score with student-oriented weights
+                  const baseScore = 
+                    (budgetScore * 0.45) + 
+                    (safetyScore * 0.30) + 
+                    (qolScore * 0.15) + 
+                    (internetScore * 0.10);
+                  
+                  // Final score adjusted by data confidence
+                  const suitabilityScore = baseScore * confidenceFactor;
+
+                  return {
+                    ...c,
+                    totalCost,
+                    rent,
+                    food,
+                    internet,
+                    transport,
+                    dataQuality,
+                    suitabilityScore,
+                  };
+                });
+
+              // Sort by lowest cost
+              const sorted = processedCities.sort((a, b) => a.totalCost - b.totalCost);
+
+              const borderColor = "#10b981";
+              const accentColor = "#10b981";
+
+              return sorted.slice(0, 4).map((c, i) => (
                 <div
                   key={i}
                   className="card hover-bg"
@@ -406,50 +487,65 @@ const Dashboard = ({ theme, toggleTheme }) => {
                   style={{
                     display: "flex",
                     flexDirection: "column",
-                    gap: "5px",
+                    gap: "8px",
                     cursor: "pointer",
-                    borderLeft: "3px solid #10b981",
+                    borderLeft: `3px solid ${borderColor}`,
                   }}
                 >
-                  <div
-                    style={{
-                      fontSize: "0.8rem",
-                      color: "#10b981",
-                      fontWeight: "bold",
-                      textTransform: "uppercase",
-                    }}
-                  >
-                    Top Value Pick #{i + 1}
+                  {/* Header with rank and data quality */}
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <div
+                      style={{
+                        fontSize: "0.75rem",
+                        color: accentColor,
+                        fontWeight: "bold",
+                        textTransform: "uppercase",
+                      }}
+                    >
+                      💰 #{i + 1}
+                    </div>
+
                   </div>
-                  <div style={{ fontSize: "1.2rem", fontWeight: "bold" }}>
+
+                  {/* City name & country */}
+                  <div style={{ fontSize: "1.15rem", fontWeight: "bold" }}>
                     {c.city}
                   </div>
-                  <div style={{ fontSize: "0.85rem", color: "#94a3b8" }}>
+                  <div style={{ fontSize: "0.8rem", color: "#94a3b8" }}>
                     {c.country}
                   </div>
+                  
+                  {/* Main metric */}
+                  <div style={{ 
+                    fontSize: "1.2rem", 
+                    fontWeight: "700", 
+                    color: accentColor,
+                    marginTop: "4px"
+                  }}>
+                    ${c.totalCost.toFixed(0)}/month
+                  </div>
+                  
+                  {/* Cost breakdown */}
                   <div
                     style={{
+                      display: "grid",
+                      gridTemplateColumns: "1fr 1fr",
+                      gap: "4px",
                       marginTop: "auto",
-                      paddingTop: "10px",
-                      fontSize: "0.8rem",
-                      display: "flex",
-                      justifyContent: "space-between",
+                      paddingTop: "8px",
+                      borderTop: "1px solid var(--border)",
+                      fontSize: "0.7rem",
+                      color: "#94a3b8",
                     }}
                   >
-                    <span>
-                      Cost: ${c.estimated_monthly_cost_single.toFixed(0)}
-                    </span>
-                    <span style={{ color: "#facc15" }}>
-                      Save{" "}
-                      {(
-                        (1 - c.estimated_monthly_cost_single / c.salary) *
-                        100
-                      ).toFixed(0)}
-                      %
-                    </span>
+                    <div>🏠 Rent: ${c.rent.toFixed(0)}</div>
+                    <div>🍔 Food: ${c.food.toFixed(0)}</div>
+                    <div>🌐 Net: ${c.internet.toFixed(0)}</div>
+                    <div>🚌 Pass: ${c.transport.toFixed(0)}</div>
                   </div>
                 </div>
-              ))}
+              ));
+            })()}
           </div>
 
           <section
