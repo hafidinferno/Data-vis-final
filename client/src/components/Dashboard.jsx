@@ -23,6 +23,50 @@ import {
 } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
 
+const REGION_MAPPING = {
+  // Asia
+  "South Korea": "Asia", "China": "Asia", "India": "Asia", "Japan": "Asia",
+  "Indonesia": "Asia", "Thailand": "Asia", "Pakistan": "Asia", "Bangladesh": "Asia",
+  "Vietnam": "Asia", "Philippines": "Asia", "Malaysia": "Asia", "Taiwan": "Asia",
+  "Hong Kong": "Asia", "Singapore": "Asia", "Sri Lanka": "Asia", "Nepal": "Asia",
+  "Cambodia": "Asia", "Kazakhstan": "Asia", "Armenia": "Asia", "Uzbekistan": "Asia",
+  "Georgia": "Asia", "Azerbaijan": "Asia", "United Arab Emirates": "Asia",
+  "Saudi Arabia": "Asia", "Qatar": "Asia", "Oman": "Asia", "Kuwait": "Asia",
+  "Bahrain": "Asia", "Jordan": "Asia", "Lebanon": "Asia", "Turkey": "Asia",
+  "Israel": "Asia", "Iran": "Asia", "Iraq": "Asia",
+
+  // Europe
+  "Germany": "Europe", "France": "Europe", "United Kingdom": "Europe", "Italy": "Europe",
+  "Spain": "Europe", "Poland": "Europe", "Netherlands": "Europe", "Belgium": "Europe",
+  "Sweden": "Europe", "Switzerland": "Europe", "Austria": "Europe", "Portugal": "Europe",
+  "Greece": "Europe", "Czech Republic": "Europe", "Hungary": "Europe", "Ireland": "Europe",
+  "Denmark": "Europe", "Finland": "Europe", "Norway": "Europe", "Romania": "Europe",
+  "Russia": "Europe", "Ukraine": "Europe", "Belarus": "Europe", "Bulgaria": "Europe",
+  "Serbia": "Europe", "Croatia": "Europe", "Slovakia": "Europe", "Lithuania": "Europe",
+  "Slovenia": "Europe", "Latvia": "Europe", "Estonia": "Europe", "Luxembourg": "Europe",
+  "Malta": "Europe", "Iceland": "Europe", "Cyprus": "Europe", "Albania": "Europe",
+  "Bosnia And Herzegovina": "Europe", "Macedonia": "Europe", "Moldova": "Europe",
+  "Montenegro": "Europe", "Kosovo (Disputed Territory)": "Europe",
+
+  // Americas
+  "United States": "Americas", "Canada": "Americas", "Brazil": "Americas", "Mexico": "Americas",
+  "Argentina": "Americas", "Colombia": "Americas", "Chile": "Americas", "Peru": "Americas",
+  "Ecuador": "Americas", "Venezuela": "Americas", "Uruguay": "Americas", "Paraguay": "Americas",
+  "Bolivia": "Americas", "Costa Rica": "Americas", "Panama": "Americas", "Dominican Republic": "Americas",
+  "Guatemala": "Americas", "Puerto Rico": "Americas", "Cuba": "Americas", "Honduras": "Americas",
+  "El Salvador": "Americas", "Jamaica": "Americas", "Trinidad And Tobago": "Americas",
+  
+  // Africa
+  "Egypt": "Africa", "South Africa": "Africa", "Nigeria": "Africa", "Kenya": "Africa",
+  "Morocco": "Africa", "Tunisia": "Africa", "Algeria": "Africa", "Ghana": "Africa",
+  "Ethiopia": "Africa", "Tanzania": "Africa", "Uganda": "Africa", "Zimbabwe": "Africa",
+  "Mauritius": "Africa", "Libya": "Africa", "Namibia": "Africa", "Botswana": "Africa",
+  "Cameroon": "Africa", "Zambia": "Africa", "Rwanda": "Africa", "Congo": "Africa",
+
+  // Oceania
+  "Australia": "Oceania", "New Zealand": "Oceania", "Fiji": "Oceania"
+};
+
 const Dashboard = ({ theme, toggleTheme }) => {
   const [cities, setCities] = useState([]);
   const [countries, setCountries] = useState([]);
@@ -43,6 +87,7 @@ const Dashboard = ({ theme, toggleTheme }) => {
   const [tipCity, setTipCity] = useState(null);
   const [selectedOverviewCity, setSelectedOverviewCity] = useState(null);
   const [rankingMode, setRankingMode] = useState("cost"); // "cost" or "suitability"
+  const [selectedRegion, setSelectedRegion] = useState("All");
 
   useEffect(() => {
     Promise.all([
@@ -393,6 +438,31 @@ const Dashboard = ({ theme, toggleTheme }) => {
             }}
           >
             <h2 style={{ margin: 0, fontSize: "1.3rem" }}>🏆 Cheapest Cities for Students</h2>
+            
+            {/* Region Filter Buttons */}
+            <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+              {["All", "Asia", "Europe", "Americas", "Africa", "Oceania"].map(region => (
+                <button
+                  key={region}
+                  onClick={() => setSelectedRegion(region)}
+                  style={{
+                    padding: "0.4rem 0.8rem",
+                    borderRadius: "6px",
+                    border: "none",
+                    cursor: "pointer",
+                    fontSize: "0.8rem",
+                    fontWeight: "600",
+                    background: selectedRegion === region ? "#10b981" : "var(--bg-secondary)",
+                    color: selectedRegion === region ? "#fff" : "var(--text-muted)",
+                    border: `1px solid ${selectedRegion === region ? "#10b981" : "var(--border)"}`,
+                    transition: "all 0.2s ease"
+                  }}
+                >
+                  {region}
+                </button>
+              ))}
+            </div>
+
             <div
               style={{
                 background: "var(--bg-card)",
@@ -470,16 +540,26 @@ const Dashboard = ({ theme, toggleTheme }) => {
                     transport,
                     dataQuality,
                     suitabilityScore,
+                    region: REGION_MAPPING[c.country] || "Other"
                   };
-                });
+                })
+                .filter(c => selectedRegion === "All" || c.region === selectedRegion);
 
               // Sort by lowest cost
-              const sorted = processedCities.sort((a, b) => a.totalCost - b.totalCost);
+              const sortedByCost = processedCities.sort((a, b) => a.totalCost - b.totalCost);
+
+              // 1. Deduplicate by Country (Keep only the cheapest city per country)
+              const seenCountries = new Set();
+              const uniqueCountries = sortedByCost.filter(c => {
+                if (seenCountries.has(c.country)) return false;
+                seenCountries.add(c.country);
+                return true;
+              });
 
               const borderColor = "#10b981";
               const accentColor = "#10b981";
 
-              return sorted.slice(0, 4).map((c, i) => (
+              return uniqueCountries.slice(0, 5).map((c, i) => (
                 <div
                   key={i}
                   className="card hover-bg"
