@@ -1140,15 +1140,15 @@ const WorldMap = ({ countryData, cities, onHover, onClick }) => {
             zIndex: 20,
           }}
         >
-          <div style={{ fontWeight: "bold" }}>{tooltip.data.city}</div>
-          <div style={{ fontSize: "0.8rem", color: "#cbd5e1" }}>
+          <div style={{ fontWeight: "bold", color: "var(--chart-tooltip-color)" }}>{tooltip.data.city}</div>
+          <div style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}>
             {tooltip.data.country}
           </div>
           <div
-            style={{ fontSize: "0.75rem", color: "#94a3b8", marginTop: "4px" }}
+            style={{ fontSize: "0.75rem", color: "var(--text-secondary)", marginTop: "4px" }}
           >
             {METRICS[activeMetric].label}:{" "}
-            <strong>
+            <strong style={{ color: "var(--chart-tooltip-color)" }}>
               ${tooltip.data[METRICS[activeMetric].keyCity]?.toFixed(0)}
             </strong>
           </div>

@@ -338,75 +338,75 @@ const Dashboard = ({ theme, toggleTheme }) => {
 
       {activeTab === "insights" && (
         <div className="animate-fade-in">
-          <div className="grid-cols-2">
-            <section className="card" style={{ marginBottom: "1.75rem" }}>
-              <h2>🔍 Analyze a City</h2>
-              <div style={{ margin: "1rem 0" }}>
-                <label
-                  className="text-muted"
-                  style={{ display: "block", marginBottom: "0.5rem" }}
+          <section className="card" style={{ marginBottom: "1.75rem" }}>
+            <h2>🔍 Analyze a City</h2>
+            <div style={{ margin: "1rem 0" }}>
+              <label
+                className="text-muted"
+                style={{ display: "block", marginBottom: "0.5rem" }}
+              >
+                Select City
+              </label>
+              <div style={{ position: "relative", minWidth: 180 }}>
+                <select
+                  value={insightCity?.city || ""}
+                  onChange={(e) =>
+                    setInsightCity(
+                      cities.find((c) => c.city === e.target.value)
+                    )
+                  }
+                  style={{
+                    border: "1px solid var(--border)",
+                    borderRadius: "8px",
+                    padding: "0.5rem 2.2rem 0.5rem 1rem",
+                    color: "var(--text-main)",
+                    background: "var(--bg-card)",
+                    fontSize: "0.95rem",
+                    cursor: "pointer",
+                    appearance: "none",
+                    WebkitAppearance: "none",
+                    MozAppearance: "none",
+                    outline: "none",
+                    width: "100%",
+                    boxSizing: "border-box",
+                    fontWeight: 600,
+                    letterSpacing: "-0.01em",
+                  }}
                 >
-                  Select City
-                </label>
-                <div style={{ position: "relative", minWidth: 180 }}>
-                  <select
-                    value={insightCity?.city || ""}
-                    onChange={(e) =>
-                      setInsightCity(
-                        cities.find((c) => c.city === e.target.value)
-                      )
-                    }
-                    style={{
-                      border: "1px solid var(--border)",
-                      borderRadius: "8px",
-                      padding: "0.5rem 2.2rem 0.5rem 1rem",
-                      color: "var(--text-main)",
-                      background: "var(--bg-card)",
-                      fontSize: "0.95rem",
-                      cursor: "pointer",
-                      appearance: "none",
-                      WebkitAppearance: "none",
-                      MozAppearance: "none",
-                      outline: "none",
-                      width: "100%",
-                      boxSizing: "border-box",
-                      fontWeight: 600,
-                      letterSpacing: "-0.01em",
-                    }}
-                  >
-                    {cities.map((c, i) => (
-                      <option key={i} value={c.city}>
-                        {c.city}, {c.country}
-                      </option>
-                    ))}
-                  </select>
-                  {/* ChevronDown icon for custom arrow */}
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="18"
-                    height="18"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="var(--text-muted)"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    style={{
-                      position: "absolute",
-                      right: 14,
-                      top: "50%",
-                      transform: "translateY(-50%)",
-                      pointerEvents: "none",
-                    }}
-                  >
-                    <polyline points="6 9 12 15 18 9" />
-                  </svg>
-                </div>
+                  {cities.map((c, i) => (
+                    <option key={i} value={c.city}>
+                      {c.city}, {c.country}
+                    </option>
+                  ))}
+                </select>
+                {/* ChevronDown icon for custom arrow */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="var(--text-muted)"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  style={{
+                    position: "absolute",
+                    right: 14,
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    pointerEvents: "none",
+                  }}
+                >
+                  <polyline points="6 9 12 15 18 9" />
+                </svg>
               </div>
+            </div>
 
-              {insightCity && <InsightPanel cityData={insightCity} />}
-            </section>
+            {insightCity && <InsightPanel cityData={insightCity} />}
+          </section>
 
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "1.75rem" }}>
             <section className="card">
               <h2>Expense Breakdown</h2>
               <p className="text-muted">
@@ -414,13 +414,9 @@ const Dashboard = ({ theme, toggleTheme }) => {
               </p>
               {insightCity && <ExpenseBreakdown cityData={insightCity} />}
             </section>
-          </div>
 
-
-
-          <section className="card" style={{ marginTop: "1.75rem" }}>
             <SmartTipsPanel city={insightCity} />
-          </section>
+          </div>
         </div>
       )}
 
@@ -448,7 +444,6 @@ const Dashboard = ({ theme, toggleTheme }) => {
                   style={{
                     padding: "0.4rem 0.8rem",
                     borderRadius: "6px",
-                    border: "none",
                     cursor: "pointer",
                     fontSize: "0.8rem",
                     fontWeight: "600",
