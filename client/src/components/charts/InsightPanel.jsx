@@ -55,23 +55,24 @@ const InsightPanel = ({ cityData, showSavings = false }) => {
         flexDirection: "column",
         background: "var(--bg-card)",
         color: "var(--text-main)",
+        padding: "1.25rem",
       }}
     >
       <div
         style={{
           borderBottom: "1px solid var(--border)",
-          paddingBottom: "1rem",
-          marginBottom: "1rem",
+          paddingBottom: "0.75rem",
+          marginBottom: "0.75rem",
         }}
       >
-        <h2 style={{ margin: 0, fontSize: "1.8rem", color: "var(--text-main)" }}>
+        <h2 style={{ margin: 0, fontSize: "1.5rem", color: "var(--text-main)" }}>
           {cityData.city}
         </h2>
         <div
           style={{
             textTransform: "uppercase",
             letterSpacing: "1px",
-            fontSize: "0.8rem",
+            fontSize: "0.75rem",
             color: "var(--text-muted)",
             fontWeight: "600",
           }}
@@ -85,43 +86,42 @@ const InsightPanel = ({ cityData, showSavings = false }) => {
         style={{
           display: "grid",
           gridTemplateColumns: "repeat(2, 1fr)",
-          gap: "1.5rem",
-          marginBottom: "1rem",
+          gap: "1rem",
+          marginBottom: "0.75rem",
         }}
       >
         <div
           style={{
-            padding: "1rem",
+            padding: "0.75rem",
             borderRadius: "0.5rem",
             border: "1px solid var(--border)",
           }}
         >
           <div
-            style={{ fontSize: "0.8rem", color: "var(--text-muted)", fontWeight: "600" }}
+            style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: "600" }}
           >
             Monthly Cost
           </div>
           <div
-            style={{ fontSize: "1.5rem", fontWeight: "bold", color: "var(--text-main)" }}
+            style={{ fontSize: "1.3rem", fontWeight: "bold", color: "var(--text-main)" }}
           >
             ${totalCost.toFixed(0)}
           </div>
         </div>
         <div
           style={{
-            padding: "1rem",
-            paddingBottom: "0.5rem",
+            padding: "0.75rem",
             borderRadius: "0.5rem",
             border: "1px solid var(--border)",
           }}
         >
           <div
-            style={{ fontSize: "0.8rem", color: "var(--text-muted)", fontWeight: "600" }}
+            style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: "600" }}
           >
             Internet (60 Mbps+)
           </div>
           <div
-            style={{ fontSize: "1.5rem", fontWeight: "bold", color: "var(--text-main)" }}
+            style={{ fontSize: "1.3rem", fontWeight: "bold", color: "var(--text-main)" }}
           >
             ${internet.toFixed(0)}
           </div>
@@ -129,27 +129,27 @@ const InsightPanel = ({ cityData, showSavings = false }) => {
       </div>
 
       {power > 0 && (
-        <div style={{ marginBottom: "2rem" }}>
+        <div style={{ marginBottom: "1.25rem" }}>
           <div
             style={{
               display: "flex",
               justifyContent: "space-between",
-              marginBottom: "0.5rem",
+              marginBottom: "0.4rem",
             }}
           >
-            <span style={{ color: "var(--text-muted)", fontWeight: "600" }}>
+            <span style={{ color: "var(--text-muted)", fontWeight: "600", fontSize: "0.85rem" }}>
               Purchasing Power
             </span>
-            <span style={{ color: powerColor, fontWeight: "bold" }}>
+            <span style={{ color: powerColor, fontWeight: "bold", fontSize: "0.9rem" }}>
               {power.toFixed(2)}x
             </span>
           </div>
           <div
             style={{
               width: "100%",
-              height: "8px",
+              height: "6px",
               background: "var(--border)",
-              borderRadius: "4px",
+              borderRadius: "3px",
               overflow: "hidden",
             }}
           >
@@ -164,9 +164,9 @@ const InsightPanel = ({ cityData, showSavings = false }) => {
           </div>
           <div
             style={{
-              fontSize: "0.8rem",
+              fontSize: "0.7rem",
               color: "var(--text-muted)",
-              marginTop: "5px",
+              marginTop: "4px",
               textAlign: "right",
             }}
           >
@@ -229,11 +229,11 @@ const InsightPanel = ({ cityData, showSavings = false }) => {
 
       <h4
         style={{
-          marginBottom: "1rem",
+          marginBottom: "0.75rem",
           borderTop: "1px solid var(--border)",
-          paddingTop: "1rem",
+          paddingTop: "0.75rem",
           color: "var(--text-main)",
-          fontSize: "1.1rem",
+          fontSize: "1rem",
         }}
       >
         Student Metrics
@@ -245,8 +245,9 @@ const InsightPanel = ({ cityData, showSavings = false }) => {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          marginBottom: "0.8rem",
+          marginBottom: "0.5rem",
           color: "var(--text-main)",
+          fontSize: "0.9rem",
         }}
       >
         <span style={{ color: "var(--text-muted)" }}>🏠 Rent (Outside)</span>
@@ -260,8 +261,9 @@ const InsightPanel = ({ cityData, showSavings = false }) => {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          marginBottom: "0.8rem",
+          marginBottom: "0.5rem",
           color: "var(--text-main)",
+          fontSize: "0.9rem",
         }}
       >
         <span style={{ color: "var(--text-muted)" }}>🍔 Cheap Meal</span>
@@ -275,8 +277,9 @@ const InsightPanel = ({ cityData, showSavings = false }) => {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          marginBottom: "0.8rem",
+          marginBottom: "0.5rem",
           color: "var(--text-main)",
+          fontSize: "0.9rem",
         }}
       >
         <span style={{ color: "var(--text-muted)" }}>🍺 Beer</span>
@@ -291,6 +294,7 @@ const InsightPanel = ({ cityData, showSavings = false }) => {
           alignItems: "center",
           justifyContent: "space-between",
           color: "var(--text-main)",
+          fontSize: "0.9rem",
         }}
       >
         <span style={{ color: "var(--text-muted)" }}>🚍 Transport</span>

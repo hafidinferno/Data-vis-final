@@ -32,7 +32,7 @@ const BarChart = ({ data, metric, label, height = 400 }) => {
         const y = d3.scaleBand()
             .domain(d3.range(data.length)) // Use index to handle potential duplicates
             .range([margin.top, height - margin.bottom])
-            .padding(0.3);
+            .padding(0.5);
 
         // Bars
         svg.selectAll('rect')
@@ -54,7 +54,7 @@ const BarChart = ({ data, metric, label, height = 400 }) => {
             .attr('y', (d, i) => y(i) + y.bandwidth() / 2)
             .attr('dy', '0.35em')
             .text(d => d[metric] ? `$${d[metric].toFixed(0)}` : 'N/A')
-            .attr('font-size', '13px')
+            .attr('font-size', '14px')
             .attr('font-weight', '600')
             .attr('fill', 'var(--text-muted)');
 
@@ -64,7 +64,7 @@ const BarChart = ({ data, metric, label, height = 400 }) => {
             .call(d3.axisBottom(x).ticks(5).tickFormat(d => `$${d}`))
             .call(g => g.select('.domain').remove());
 
-        xAxis.selectAll('text').attr('fill', 'var(--text-muted)').style('font-size', '11px');
+        xAxis.selectAll('text').attr('fill', 'var(--text-muted)').style('font-size', '13px');
         xAxis.selectAll('line').attr('stroke', 'var(--border)');
 
         const yAxis = svg.append('g')
@@ -72,7 +72,7 @@ const BarChart = ({ data, metric, label, height = 400 }) => {
             .call(d3.axisLeft(y).tickFormat(i => data[i]?.city).tickSizeOuter(0));
 
         yAxis.selectAll('text')
-            .style('font-size', '13px')
+            .style('font-size', '15px')
             .style('font-weight', '600')
             .style('fill', 'var(--text-main)');
 
@@ -84,7 +84,7 @@ const BarChart = ({ data, metric, label, height = 400 }) => {
             .attr('x', width / 2 + margin.left / 2)
             .attr('y', height - 5)
             .attr('text-anchor', 'middle')
-            .attr('font-size', '12px')
+            .attr('font-size', '14px')
             .attr('fill', 'var(--text-muted)')
             .text(label);
 

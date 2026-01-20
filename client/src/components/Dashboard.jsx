@@ -468,7 +468,7 @@ const Dashboard = ({ theme, toggleTheme }) => {
                 border: "1px solid var(--border)",
               }}
             >
-              📊 <strong>Total = </strong>Rent + Food (60 meals) + Internet + Transport • USD/month
+              <strong>Total = </strong>Rent + Food (60 meals) + Internet + Transport • USD/month
             </div>
           </div>
 
@@ -871,7 +871,6 @@ const Dashboard = ({ theme, toggleTheme }) => {
                   gridColumn: "span 8",
                   display: "grid",
                   gridTemplateColumns: "repeat(2, 1fr)",
-                  gap: "1.5rem",
                 }}
               >
                 <div>

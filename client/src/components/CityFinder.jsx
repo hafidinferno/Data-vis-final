@@ -5,7 +5,7 @@ import { REGIONS } from "../data/regions";
 const CityFinder = ({ cities }) => {
   const [budget, setBudget] = useState(2000);
   const [minSalary, setMinSalary] = useState(0);
-  const [sortBy, setSortBy] = useState("cost_low");
+  const [sortBy, setSortBy] = useState("salary_high");
   const [regionFilter, setRegionFilter] = useState("All Regions");
   const [results, setResults] = useState([]);
 
@@ -271,108 +271,168 @@ const CityFinder = ({ cities }) => {
         </div>
       </div>
 
-      <div
-        style={{
-          display: "grid",
-          gap: "1rem",
-          gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
-        }}
-      >
-        {results.map((city, i) => {
-          const hasSalary =
-            typeof city.salary === "number" && !isNaN(city.salary);
-          const hasCost =
-            typeof city.estimated_monthly_cost_single === "number" &&
-            !isNaN(city.estimated_monthly_cost_single);
-          const power =
-            hasSalary && hasCost && city.estimated_monthly_cost_single !== 0
-              ? (city.salary / city.estimated_monthly_cost_single).toFixed(2)
-              : "N/A";
-          return (
-            <div key={i} className="card" style={{ padding: "1rem" }}>
-              <div
-                style={{
-                  fontSize: "1.1rem",
-                  fontWeight: "600",
-                  marginBottom: "0.5rem",
-                  color: "var(--text-main)",
-                }}
-              >
-                {city.city}
-              </div>
-              <div
-                style={{
-                  color: "var(--text-muted)",
-                  fontSize: "0.9rem",
-                  marginBottom: "0.5rem",
-                }}
-              >
-                {city.country}
-              </div>
+      {results.length === 0 ? (
+        <div
+          style={{
+            textAlign: "center",
+            color: "var(--text-muted)",
+            padding: "2rem",
+          }}
+        >
+          Adjust filters and click Find to see cities.
+        </div>
+      ) : (
+        (() => {
+          // Group cities by country
+          const groupedByCountry = results.reduce((acc, city) => {
+            const country = city.country || "Unknown";
+            if (!acc[country]) {
+              acc[country] = [];
+            }
+            acc[country].push(city);
+            return acc;
+          }, {});
 
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  marginBottom: "4px",
-                  fontSize: "0.9rem",
-                }}
-              >
-                <span style={{ color: "var(--text-muted)" }}>Cost:</span>
-                <span style={{ color: "var(--text-main)", fontWeight: "600" }}>
-                  {hasCost
-                    ? `$${city.estimated_monthly_cost_single.toFixed(0)}`
-                    : "N/A"}
-                </span>
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  marginBottom: "4px",
-                  fontSize: "0.9rem",
-                }}
-              >
-                <span style={{ color: "var(--text-muted)" }}>Salary:</span>
-                <span style={{ color: "var(--text-main)", fontWeight: "600" }}>
-                  {hasSalary ? `$${city.salary.toFixed(0)}` : "N/A"}
-                </span>
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  marginTop: "0.5rem",
-                  paddingTop: "0.5rem",
-                  borderTop: "1px dashed var(--border)",
-                  fontSize: "0.9rem",
-                }}
-              >
-                <span style={{ color: "var(--text-muted)" }}>Power:</span>
-                <span
-                  style={{
-                    color:
-                      power !== "N/A" && power > 1.5 ? "#10b981" : "#f59e0b",
-                  }}
-                >
-                  {power !== "N/A" ? `${power}x` : "N/A"}
-                </span>
-              </div>
+          // Sort countries alphabetically
+          const sortedCountries = Object.keys(groupedByCountry).sort();
+
+          return (
+            <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
+              {sortedCountries.map((country) => (
+                <div key={country}>
+                  <div
+                    style={{
+                      fontSize: "1.2rem",
+                      fontWeight: "700",
+                      color: "var(--text-main)",
+                      marginBottom: "1rem",
+                      paddingBottom: "0.5rem",
+                      borderBottom: "2px solid var(--border)",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.5rem",
+                    }}
+                  >
+                    <span>{country}</span>
+                    <span
+                      style={{
+                        fontSize: "0.85rem",
+                        fontWeight: "500",
+                        color: "var(--text-muted)",
+                        marginLeft: "auto",
+                      }}
+                    >
+                      {groupedByCountry[country].length}{" "}
+                      {groupedByCountry[country].length === 1
+                        ? "city"
+                        : "cities"}
+                    </span>
+                  </div>
+                  <div
+                    style={{
+                      display: "grid",
+                      gap: "1rem",
+                      gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
+                    }}
+                  >
+                    {groupedByCountry[country].map((city, i) => {
+                      const hasSalary =
+                        typeof city.salary === "number" && !isNaN(city.salary);
+                      const hasCost =
+                        typeof city.estimated_monthly_cost_single === "number" &&
+                        !isNaN(city.estimated_monthly_cost_single);
+                      const power =
+                        hasSalary &&
+                        hasCost &&
+                        city.estimated_monthly_cost_single !== 0
+                          ? (city.salary / city.estimated_monthly_cost_single).toFixed(2)
+                          : "N/A";
+                      return (
+                        <div key={i} className="card" style={{ padding: "1rem" }}>
+                          <div
+                            style={{
+                              fontSize: "1.1rem",
+                              fontWeight: "600",
+                              marginBottom: "0.5rem",
+                              color: "var(--text-main)",
+                            }}
+                          >
+                            {city.city}
+                          </div>
+                          <div
+                            style={{
+                              color: "var(--text-muted)",
+                              fontSize: "0.9rem",
+                              marginBottom: "0.5rem",
+                            }}
+                          >
+                            {city.country}
+                          </div>
+
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                              marginBottom: "4px",
+                              fontSize: "0.9rem",
+                            }}
+                          >
+                            <span style={{ color: "var(--text-muted)" }}>Cost:</span>
+                            <span
+                              style={{ color: "var(--text-main)", fontWeight: "600" }}
+                            >
+                              {hasCost
+                                ? `$${city.estimated_monthly_cost_single.toFixed(0)}`
+                                : "N/A"}
+                            </span>
+                          </div>
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                              marginBottom: "4px",
+                              fontSize: "0.9rem",
+                            }}
+                          >
+                            <span style={{ color: "var(--text-muted)" }}>Salary:</span>
+                            <span
+                              style={{ color: "var(--text-main)", fontWeight: "600" }}
+                            >
+                              {hasSalary ? `$${city.salary.toFixed(0)}` : "N/A"}
+                            </span>
+                          </div>
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                              marginTop: "0.5rem",
+                              paddingTop: "0.5rem",
+                              borderTop: "1px dashed var(--border)",
+                              fontSize: "0.9rem",
+                            }}
+                          >
+                            <span style={{ color: "var(--text-muted)" }}>Power:</span>
+                            <span
+                              style={{
+                                color:
+                                  power !== "N/A" && power > 1.5
+                                    ? "#10b981"
+                                    : "#f59e0b",
+                              }}
+                            >
+                              {power !== "N/A" ? `${power}x` : "N/A"}
+                            </span>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
             </div>
           );
-        })}
-        {results.length === 0 && (
-          <div
-            style={{
-              textAlign: "center",
-              color: "var(--text-muted)",
-              gridColumn: "1/-1",
-            }}
-          >
-            Adjust filters and click Find to see cities.
-          </div>
-        )}
-      </div>
+        })()
+      )}
     </div>
   );
 };
