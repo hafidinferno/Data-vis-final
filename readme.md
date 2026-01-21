@@ -2,7 +2,7 @@
 
 ## 📋 Objectif du Projet
 
-Ce projet vise à créer une suite de visualisations interactives et intuitives pour explorer et comprendre le coût de la vie dans différentes villes du monde. L'objectif est de fournir aux utilisateurs et spécifiquement les étudiants des outils pour comparer, analyser et prendre des décisions éclairées sur les choix de localisation basés sur des facteurs économiques.
+Ce projet vise à créer une suite de visualisations interactives et intuitives pour explorer et comprendre le coût de la vie dans différentes villes du monde. L'objectif est de fournir aux utilisateurs des outils pour comparer, analyser et prendre des décisions éclairées sur les choix de localisation basés sur des facteurs économiques.
 
 ## 🔗 Liens
 

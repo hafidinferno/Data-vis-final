@@ -12,9 +12,9 @@ const SmartTipsPanel = ({ city }) => {
           marginBottom: "1rem",
         }}
       >
-        <h3 style={{ margin: 0 }}>
+        <h2 style={{ margin: 0 }}>
           Tips: {city ? city.city : "Select a city"}
-        </h3>
+        </h2>
       </div>
       <div
         style={{
