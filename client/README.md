@@ -1,5 +1,17 @@
 # Cost of Living Dashboard
 
+## Requirements
+
+- Node.js (v18 or higher recommended)
+- npm (v9 or higher recommended)
+
+## Tech Stack
+
+- **React** v19.2.0
+- **Vite** v7.2.4
+- **D3.js** v7.9.0
+- **TopoJSON** (via D3)
+
 ## Setup
 
 1. Install dependencies:
@@ -20,9 +32,3 @@
    ```bash
    npm run dev
    ```
-
-## Tech Stack
-
-- React (Vite)
-- D3.js
-- TopoJSON
